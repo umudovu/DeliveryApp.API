@@ -51,13 +51,22 @@ namespace DeliveryApp.Company.Controllers.Company
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(CategoryCreateVM category)
         {
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+				var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			var categorys =await _categoryService.GetAllCategoryAsync(userId);
-           
+				var categorys = await _categoryService.GetAllCategoryAsync(userId);
 
-			if (!ModelState.IsValid) return View(categorys);
-			await _categoryService.AddCategoryAsync(category, userId);
+
+				if (!ModelState.IsValid) return View(categorys);
+				await _categoryService.AddCategoryAsync(category, userId);
+			}
+            catch (Exception ex)
+            {
+
+				ModelState.AddModelError("Name",ex.Message);
+				return View();
+            }
 
 			return RedirectToAction("Index");
         }
@@ -87,15 +96,31 @@ namespace DeliveryApp.Company.Controllers.Company
 		public async Task<IActionResult> Update(CategoryUpdateVM updateVM)
         {
 
-			await _categoryService.UpdateCategoryAsync(updateVM);
+            try
+            {
+				await _categoryService.UpdateCategoryAsync(updateVM);
+			}
+            catch (Exception ex)
+            {
+
+				ModelState.AddModelError("Name", ex.Message);
+				return View();
+			}
 
 			return RedirectToAction("Index");
 		}
 
 		public async Task<IActionResult> Remove(int id)
         {
-			if (id == null) return BadRequest();
-			await _categoryService.DeleteCategoryAsync(id);
+            try
+            {
+				if (id == null) return BadRequest();
+				await _categoryService.DeleteCategoryAsync(id);
+			}
+            catch (Exception ex)
+            {
+				return BadRequest(ex.Message);
+            }
 			return RedirectToAction("index");
         }
 

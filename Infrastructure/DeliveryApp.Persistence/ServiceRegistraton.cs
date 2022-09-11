@@ -44,6 +44,7 @@ namespace DeliveryApp.Persistence
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
         }
     }
 }

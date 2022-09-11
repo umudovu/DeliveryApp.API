@@ -4,6 +4,7 @@ using DeliveryApp.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeliveryApp.Persistence.Context.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220911080224_mig4")]
+    partial class mig4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,6 +303,25 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Photo.ProductPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductPhotos");
+                });
+
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -312,7 +333,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -322,15 +343,16 @@ namespace DeliveryApp.Persistence.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImagePublicId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -349,6 +371,9 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("PhotoId")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -550,15 +575,19 @@ namespace DeliveryApp.Persistence.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DeliveryApp.Domain.Entities.Company", "Company")
+                    b.HasOne("DeliveryApp.Domain.Entities.Company", null)
                         .WithMany("Products")
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("DeliveryApp.Domain.Entities.Photo.ProductPhoto", "Photo")
+                        .WithOne("Product")
+                        .HasForeignKey("DeliveryApp.Domain.Entities.Product", "PhotoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
 
-                    b.Navigation("Company");
+                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -634,6 +663,12 @@ namespace DeliveryApp.Persistence.Context.Migrations
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Photo.ProductPhoto", b =>
+                {
+                    b.Navigation("Product")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

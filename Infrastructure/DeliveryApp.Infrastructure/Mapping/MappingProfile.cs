@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DeliveryApp.Application.ViewModels.Category;
+using DeliveryApp.Application.ViewModels.Product;
 using DeliveryApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace DeliveryApp.Infrastructure.Mapping
         public MappingProfile()
         {
             CreateMap<Category, CategoryUpdateVM>().ReverseMap();
+            CreateMap<Product, ProductCreateVM>().ReverseMap();
+            CreateMap<Product, ProductUpdateVM>().ReverseMap();
         }
     }
 }

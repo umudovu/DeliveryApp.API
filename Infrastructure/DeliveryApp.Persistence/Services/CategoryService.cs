@@ -12,7 +12,8 @@ namespace DeliveryApp.Persistence.Services
 		public readonly ICategoryRepository _categoryRepository;
 		private readonly IPhotoService _photoService;
 
-        public CategoryService(ICompanyService companyService, ICategoryRepository categoryRepository, IPhotoService photoService)
+        public CategoryService(ICompanyService companyService, ICategoryRepository categoryRepository,
+								IPhotoService photoService)
         {
             _companyService = companyService;
             _categoryRepository = categoryRepository;

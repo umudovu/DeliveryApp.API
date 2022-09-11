@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager Configuration = builder.Configuration;
 
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
 builder.Services.AddPersistenceServices(Configuration);
 builder.Services.AddInfrastructureServices();
 var app = builder.Build();

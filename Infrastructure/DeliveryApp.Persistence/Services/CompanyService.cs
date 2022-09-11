@@ -1,4 +1,5 @@
-﻿using DeliveryApp.Application.Abstractions.Services;
+﻿using AutoMapper;
+using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Application.Repositories;
 using DeliveryApp.Application.ViewModels.Company;
@@ -77,9 +78,9 @@ namespace DeliveryApp.Persistence.Services
 		}
 
 
-		public Task<Company> GetCompanyAsync(string userId)
+		public async Task<Company> GetCompanyAsync(string userId)
 		{
-			return _companyRepository.GetSingleAsync(x => x.AppUserId == userId);
+			return await _companyRepository.GetSingleAsync(x => x.AppUserId == userId);
 		}
 
 	}

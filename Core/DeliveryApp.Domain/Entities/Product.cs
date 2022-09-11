@@ -14,10 +14,14 @@ namespace DeliveryApp.Domain.Entities
         public string Description { get; set; }
         public int StockCount { get; set; }
         public double Price { get; set; }
-        public string ImageUrl { get; set; }
+
+        public string? ImageUrl { get; set; }
+        public string? ImagePublicId { get; set; }
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-		public List<ProductPhoto> Photo { get; set; }
-	}
+
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
+    }
 }
