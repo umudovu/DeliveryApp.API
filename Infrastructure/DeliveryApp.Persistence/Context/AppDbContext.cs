@@ -1,5 +1,6 @@
 ﻿using DeliveryApp.Domain.Entities;
 using DeliveryApp.Domain.Entities.Common;
+using DeliveryApp.Domain.Entities.Photo;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DeliveryApp.Persistence.Context
 {
-    public class AppDbContext : IdentityDbContext<AppUser>
+	public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
@@ -20,10 +21,15 @@ namespace DeliveryApp.Persistence.Context
         public DbSet<Company> Companies { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+		public DbSet<ProductPhoto> ProductPhotos { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder builder)
+		protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            //builder.Entity<CategoryPhoto>()
+            //     .HasOne(x => x.Category).WithOne(x => x.Photo).HasForeignKey<CategoryPhoto>(x => x.Id);
+
             base.OnModelCreating(builder);
 
         }

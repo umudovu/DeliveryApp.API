@@ -1,4 +1,5 @@
 ﻿using DeliveryApp.Domain.Entities.Common;
+using DeliveryApp.Domain.Entities.Photo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace DeliveryApp.Domain.Entities
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-    }
+		public List<ProductPhoto> Photo { get; set; }
+	}
 }

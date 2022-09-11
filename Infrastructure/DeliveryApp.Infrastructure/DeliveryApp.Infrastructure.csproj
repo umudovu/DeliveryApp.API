@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\DeliveryApp.Application\DeliveryApp.Application.csproj" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Token\" />
+    <ProjectReference Include="..\..\Core\DeliveryApp.Application\DeliveryApp.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DeliveryApp.Infrastructure.Helpers;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace DeliveryApp.Persistence
 {
     static class Configuration
     {
-        static public string ConnectionString
+        public static  string ConnectionString
         {
             get
             {
@@ -20,5 +21,7 @@ namespace DeliveryApp.Persistence
                 return configurationManager.GetConnectionString("MsSql");
             }
         }
-    }
+       
+
+	}
 }
