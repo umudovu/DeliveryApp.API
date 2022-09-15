@@ -2,8 +2,8 @@
 
 
 @{ 
-    var controllerName =ViewContext.RouteData.Values["controller"].ToString();
-    var actionName =ViewContext.RouteData.Values["Action"].ToString();
+    var controllerName =ViewContext.RouteData.Values["controller"]?.ToString();
+    var actionName =ViewContext.RouteData.Values["Action"]?.ToString();
 }
 
 <!DOCTYPE html>
