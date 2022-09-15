@@ -19,7 +19,7 @@ namespace DeliveryApp.Company.ViewComponents
         {
 
             AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var company = await _companyService.GetCompanyAsync(user.Id);
+            var company =  _companyService.GetCompany(user.Id);
 
             return View(company);
         }

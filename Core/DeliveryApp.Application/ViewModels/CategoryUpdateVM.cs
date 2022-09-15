@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliveryApp.Application.ViewModels.Category
+namespace DeliveryApp.Application.ViewModels
 {
     public class CategoryUpdateVM
     {

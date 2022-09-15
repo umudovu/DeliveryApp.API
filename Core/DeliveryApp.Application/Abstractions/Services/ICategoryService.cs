@@ -1,5 +1,5 @@
 ﻿using DeliveryApp.Application.DTOs.Category;
-using DeliveryApp.Application.ViewModels.Category;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace DeliveryApp.Application.Abstractions.Services
 		Task<bool> UpdateCategoryAsync(CategoryUpdateVM categoryVM);
 		Task<bool> DeleteCategoryAsync(int id);
 		Task<Category> GetSingleCategoryAsync(int id);
-		Task<IQueryable<Category>> GetAllCategoryAsync(string userId);
+		IQueryable<Category> GetAllCategory(string userId);
 		
 	}
 }

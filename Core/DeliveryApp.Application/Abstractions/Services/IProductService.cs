@@ -1,4 +1,4 @@
-﻿using DeliveryApp.Application.ViewModels.Product;
+﻿using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,6 @@ namespace DeliveryApp.Application.Abstractions.Services
         Task<bool> UpdateAsync(ProductUpdateVM updateVM);
         Task<bool> DeleteAsync(int id);
         Task<Product>GetSingleAsync(int id);
-        Task<IQueryable<Product>> GetAllAsync(string userId);
+        IQueryable<Product> GetAll(string userId);
     }
 }

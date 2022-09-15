@@ -21,7 +21,26 @@ namespace DeliveryApp.Persistence
                 return configurationManager.GetConnectionString("MsSql");
             }
         }
-       
 
-	}
+        public static CloudinarySettings GetCloudinarySettings
+        {
+            get
+            {
+                ConfigurationManager configurationManager = new();
+                configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../Presentation/DeliveryApp.API"));
+                configurationManager.AddJsonFile("appsettings.json");
+                CloudinarySettings cloudinary = new()
+                {
+                    CloudName = configurationManager.GetSection("CloudinarySettings:CloudName").Value,
+                    ApiKey = configurationManager.GetSection("CloudinarySettings:ApiKey").Value,
+                    ApiSecret = configurationManager.GetSection("CloudinarySettings:ApiSecret").Value,
+
+                };
+                return cloudinary;
+            }
+        }
+
+
+
+    }
 }

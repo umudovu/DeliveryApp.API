@@ -17,6 +17,7 @@ namespace DeliveryApp.Domain.Entities
 
         public string? ImageUrl { get; set; }
         public string? ImagePublicId { get; set; }
+        public bool IsDelete { get; set; }
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }

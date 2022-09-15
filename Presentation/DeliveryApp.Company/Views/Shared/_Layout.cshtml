@@ -1,4 +1,5 @@
-﻿
+﻿@using DeliveryApp.Infrastructure.Enums
+
 
 @{ 
     var controllerName =ViewContext.RouteData.Values["controller"].ToString();
@@ -130,7 +131,7 @@
 			</div>
 		</div>
 	</div>
-
+	<!-- left side bar -->
 	<div class="left-side-bar">
 		<div class="brand-logo">
 			<a href="index.html">
@@ -158,8 +159,6 @@
 						</a>
 						<ul class="submenu">
 							<li><a asp-controller="category" asp-action="index">Categories</a></li>
-							<li><a href="javascript:;">Level 1</a></li>
-							<li><a href="javascript:;">Level 1</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -167,9 +166,8 @@
 							<span class="micon dw dw-list3"></span><span class="mtext">Products</span>
 						</a>
 						<ul class="submenu">
-							<li><a asp-controller="product" asp-action="index">Products</a></li>
-							<li><a href="javascript:;">Level 1</a></li>
-							<li><a href="javascript:;">Level 1</a></li>
+							<li><a asp-controller="product" asp-action="index" asp-route-act="@ProductAction.IsActive">Aktive Products</a></li>
+							<li><a asp-controller="product" asp-action="index"asp-route-act="@ProductAction.IsPassive">Removed</a></li>
 						</ul>
 					</li>
 					<li>
@@ -202,7 +200,7 @@
 													}
 												</li>
 											}
-								else if (controllerName == "Dashboard" || controllerName=="User")
+								else if (controllerName == "Dashboard" || controllerName=="Account")
 								{
 									<li class="mx-5 " aria-current="page">
 

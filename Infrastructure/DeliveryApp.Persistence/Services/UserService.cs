@@ -2,32 +2,31 @@
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeliveryApp.Persistence.Services
 {
 	public class UserService : IUserService
 	{
 		readonly UserManager<AppUser> _userManager;
+        public UserService(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
-		public UserService(UserManager<AppUser> userManager)
-		{
-			_userManager = userManager;
-		}
-
-		public async Task<CreateUserResponse> CreateAsync(CreateUser model)
+        public async Task<CreateUserResponse> CreateAsync(CreateUser model)
 		{
 			IdentityResult result = await _userManager.CreateAsync(new()
 			{
 				UserName = model.Username,
 				Email = model.Email,
+			}, model.Password);
+
+			Customer customer = new()
+			{
 				Name = model.Name,
 				SurName = model.SurName,
-			}, model.Password);
+				Address = model.Address,
+			};
 
 			CreateUserResponse response = new() { Succeeded = result.Succeeded };
 
@@ -41,13 +40,16 @@ namespace DeliveryApp.Persistence.Services
 
 		}
 
-		public async Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)
+
+
+        public async Task UpdateRefreshToken(string refreshToken, AppUser user, 
+			DateTime accessTokenDate, int addOnAccessTokenDate)
 		{
 			if (user != null)
 			{
-				user.RefreshToken = refreshToken;
-				user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
-				await _userManager.UpdateAsync(user);
+				//user.RefreshToken = refreshToken;
+				//user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
+				//await _userManager.UpdateAsync(user);
 			}
 			else
 				throw new Exception("User Not Found");

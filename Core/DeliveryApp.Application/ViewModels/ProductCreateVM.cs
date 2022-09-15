@@ -1,21 +1,26 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliveryApp.Application.ViewModels.Product
+namespace DeliveryApp.Application.ViewModels
 {
-    public class ProductUpdateVM
+    public class ProductCreateVM
     {
-        public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public int StockCount { get; set; }
+        [Required]
         public double Price { get; set; }
+        [Required]
         public int CategoryId { get; set; }
-
+        [Required]
         public IFormFile Photo { get; set; }
     }
 }

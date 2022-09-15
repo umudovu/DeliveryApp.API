@@ -1,5 +1,6 @@
 ﻿using DeliveryApp.Application.Repositories;
 using DeliveryApp.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,19 +21,10 @@ namespace DeliveryApp.API.Controllers
             _companyRepository = companyRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-
-            await _companyRepository.AddAsync(
-                new() { Name = "Company1",
-                Categories = new HashSet<Category>()
-                {
-                    new(){Name = "Cate 1"}
-                }
-                
-                });
-            await _companyRepository.SaveAsync();
 
             return Ok(_companyRepository.GetAll());
         }

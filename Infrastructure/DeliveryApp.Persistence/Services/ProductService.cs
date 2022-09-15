@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.Repositories;
-using DeliveryApp.Application.ViewModels.Product;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 using DeliveryApp.Domain.Entities.Photo;
 using System;
@@ -32,11 +32,15 @@ namespace DeliveryApp.Persistence.Services
 
         public async Task<bool> AddAsync(ProductCreateVM createVM,string userId)
         {
-            var products = await GetAllAsync(userId);
-            var company = await _companyService.GetCompanyAsync(userId);
+            var products =  GetAll(userId);
+            var company =  _companyService.GetCompany(userId);
             var category = await _categoryService.GetSingleCategoryAsync(createVM.CategoryId);
 
-            if (products.Any(x => x.Name.ToLower() == createVM.Name.ToLower())) throw new Exception("Name exsist");
+            if (products.Any(x => x.Name.ToLower() == createVM.Name.ToLower()))
+                
+                throw new Exception("Name exsist");
+
+
             var imageResult = await _photoService.AddPhotoAsync(createVM.Photo);
             
             Product newProduct = new()
@@ -61,14 +65,15 @@ namespace DeliveryApp.Persistence.Services
         {
             var product = await GetSingleAsync(id);
             if (product == null) throw new Exception("Not found");
-            _productRepository.Remove(product);
+
+            product.IsDelete = true;
             return await _productRepository.SaveAsync();
         }
 
-        public async Task<IQueryable<Product>> GetAllAsync(string userId)
+        public IQueryable<Product> GetAll(string userId)
         {
-             var company = await _companyService.GetCompanyAsync(userId);
-            return  _productRepository.GetWhere(x => x.CompanyId == company.Id);
+             var company =  _companyService.GetCompany(userId);
+            return  company.Products.AsQueryable();
         }
 
         public async Task<Product> GetSingleAsync(int id)

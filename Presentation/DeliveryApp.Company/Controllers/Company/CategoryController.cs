@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DeliveryApp.Application.Abstractions.Services;
-using DeliveryApp.Application.ViewModels.Category;
+using DeliveryApp.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
@@ -21,7 +21,7 @@ namespace DeliveryApp.Company.Controllers.Company
         public async Task<IActionResult> Index()
 		{
 			var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			var categories = await _categoryService.GetAllCategoryAsync(userid);
+			var categories =  _categoryService.GetAllCategory(userid);
 
             //var categories = query.ToList();
             //var c = categories.FirstOrDefault(x => x.Id == 1);
@@ -37,7 +37,7 @@ namespace DeliveryApp.Company.Controllers.Company
 		{
 			var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			var categories =await _categoryService.GetAllCategoryAsync(userid);
+			var categories = _categoryService.GetAllCategory(userid);
 
 			
 			var parent = categories.Where(x => x.ParentId == null).AsEnumerable();
@@ -55,10 +55,10 @@ namespace DeliveryApp.Company.Controllers.Company
             {
 				var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-				var categorys = await _categoryService.GetAllCategoryAsync(userId);
+				var categorys =  _categoryService.GetAllCategory(userId).ToList();
 
 
-				if (!ModelState.IsValid) return View(categorys);
+				if (!ModelState.IsValid) return View();
 				await _categoryService.AddCategoryAsync(category, userId);
 			}
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace DeliveryApp.Company.Controllers.Company
 
 			var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			var categories = await _categoryService.GetAllCategoryAsync(userid);
+			var categories =  _categoryService.GetAllCategory(userid);
 
 			var category = categories.FirstOrDefault(x=>x.Id==id);
 			CategoryUpdateVM updateVM = _mapper.Map<CategoryUpdateVM>(category);

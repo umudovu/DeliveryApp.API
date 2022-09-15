@@ -1,26 +1,22 @@
-﻿using AutoMapper;
-using DeliveryApp.Application.Abstractions.Services;
+﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Application.Repositories;
-using DeliveryApp.Application.ViewModels.Company;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
-using DeliveryApp.Domain.Entities.Photo;
 using DeliveryApp.Infrastructure.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryApp.Persistence.Services
 {
-	public class CompanyService : ICompanyService
+    public class CompanyService : ICompanyService
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ICompanyRepository _companyRepository;
 		private readonly IPhotoService _photoService;
-		public CompanyService(UserManager<AppUser> userManager, ICompanyRepository companyRepository, IPhotoService photoService)
+		public CompanyService(UserManager<AppUser> userManager, ICompanyRepository companyRepository,
+			IPhotoService photoService)
 		{
 			_userManager = userManager;
 			_companyRepository = companyRepository;
@@ -33,11 +29,7 @@ namespace DeliveryApp.Persistence.Services
 			AppUser user = new()
 			{
 				Email = model.Email,
-				UserName = model.Name.Split(" ")[0].ToLower(),
-				Name = model.Name,
-				SurName = model.Name,
-				ImageUrl= imageResult.SecureUrl.AbsoluteUri,
-				ImagePublicId = imageResult.PublicId
+				UserName = model.Email
 			};
 
 			IdentityResult result = await _userManager.CreateAsync(user,model.Password);
@@ -50,6 +42,8 @@ namespace DeliveryApp.Persistence.Services
 				AppUserId = user.Id,
 				StartJob =model.StartJob,
 				EndJob = model.EndJob,
+				//ImageUrl = imageResult.SecureUrl.AbsoluteUri,
+				//ImagePublicId = imageResult.PublicId profile
 			});
 
 			
@@ -78,10 +72,51 @@ namespace DeliveryApp.Persistence.Services
 		}
 
 
-		public async Task<Company> GetCompanyAsync(string userId)
+		public Company GetCompany(string userId)
 		{
-			return await _companyRepository.GetSingleAsync(x => x.AppUserId == userId);
+			var query = _companyRepository.GetWhere(x => x.AppUserId == userId);
+			Company company = query.Include(x => x.Products).Include(c => c.Categories).First();
+
+			return company;
 		}
 
+        public async Task<bool> UpdateAsync(UpdateCompanyDto companyDto)
+        {
+			var user = await _userManager.FindByIdAsync(companyDto.Id);
+			var company =  GetCompany(user.Id);
+
+			company.Name = companyDto.Name;
+			company.EndJob = companyDto.EndJob;
+			company.StartJob= companyDto.StartJob;
+			company.Adress= companyDto.Adress;
+			company.PhoneNumber= companyDto.PhoneNumber;
+			company.Description= companyDto.Description;
+
+			
+
+			 _companyRepository.Update(company);
+
+			return await _companyRepository.SaveAsync();
+
+		}
+
+        public async Task<bool> UpdatePhotoAsync(IFormFile Photo, string userId)
+        {
+            if (Photo != null)
+            {
+				var user = await _userManager.FindByIdAsync(userId);
+				var company = GetCompany(user.Id);
+
+				if(company.ImagePublicId!=null) await _photoService.DeletePhotoAsync(company.ImagePublicId);
+
+				var imageResult = await _photoService.AddPhotoAsync(Photo);
+
+				company.ImageUrl = imageResult.SecureUrl.AbsoluteUri;
+				company.ImagePublicId = imageResult.PublicId;
+
+				return await _companyRepository.SaveAsync();
+			}
+			return false;
+		}
 	}
 }

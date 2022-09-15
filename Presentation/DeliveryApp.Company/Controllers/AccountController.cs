@@ -1,15 +1,16 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
-using DeliveryApp.Application.ViewModels.Company;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 using DeliveryApp.Infrastructure.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace DeliveryApp.Company.Controllers
 {
-	public class AccountController : Controller
+    public class AccountController : Controller
     {
         private readonly ICompanyService _companyService;
         private readonly IAuthService _authService;
@@ -44,7 +45,7 @@ namespace DeliveryApp.Company.Controllers
             CreateUserResponse response = await _companyService.CreateAsync(registerVM);
             if (response.Succeeded) return RedirectToAction("login");
 
-            return RedirectToAction("index", "dashboard");
+            return BadRequest(response.Message);
         }
 
         [HttpPost]
@@ -63,6 +64,64 @@ namespace DeliveryApp.Company.Controllers
             return RedirectToAction("index", "dashboard");
         }
 
+        public  async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+
+            ProfileVM profile = new()
+            {
+                User = user,
+                Company = _companyService.GetCompany(user.Id)
+            };
+
+
+            return View(profile);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(UpdateCompanyDto updateCompany)
+        {
+
+            if (!ModelState.IsValid) return RedirectToAction("profile", updateCompany);
+            try
+            {
+                var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                updateCompany.Id = userid;
+                await _companyService.UpdateAsync(updateCompany);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+            return RedirectToAction("profile");
+        }
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdatePhoto(IFormFile Photo)
+        {
+            var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!ModelState.IsValid) return BadRequest();
+
+            try
+            {
+                await _companyService.UpdatePhotoAsync(Photo, userid);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return RedirectToAction("profile");
+        }
 
         public async Task CreateRole()
         {

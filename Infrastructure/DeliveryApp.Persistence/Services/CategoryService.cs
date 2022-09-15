@@ -1,6 +1,6 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.Repositories;
-using DeliveryApp.Application.ViewModels.Category;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 
 namespace DeliveryApp.Persistence.Services
@@ -22,8 +22,8 @@ namespace DeliveryApp.Persistence.Services
 
         public async Task<bool> AddCategoryAsync(CategoryCreateVM categoryVM, string userId)
 		{
-			var company =await _companyService.GetCompanyAsync(userId);
-			var category =await GetAllCategoryAsync(userId);
+			var company = _companyService.GetCompany(userId);
+			var category = GetAllCategory(userId);
 
 			if (category.Any(c => c.Name.ToLower() == categoryVM.Name.ToLower()))
 			{
@@ -88,11 +88,11 @@ namespace DeliveryApp.Persistence.Services
 
 
 		}
-		public async Task<IQueryable<Category>> GetAllCategoryAsync(string userId)
+		public IQueryable<Category> GetAllCategory(string userId)
 		{
-			var company =await _companyService.GetCompanyAsync(userId);
+			var company = _companyService.GetCompany(userId);
 			
-			return _categoryRepository.GetWhere(x => x.CompanyId == company.Id);
+			return company.Categories.AsQueryable();
 		}
 
 		public async Task<Category> GetSingleCategoryAsync(int id)

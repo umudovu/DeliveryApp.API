@@ -20,9 +20,12 @@ namespace DeliveryApp.Persistence.Services
 		{
 			var acc = new Account
 			(
-				"webapi",
-				"592423288134115",
-				"IiyJX9O34h4qbQnd_pKvgelulFo"
+				Configuration.GetCloudinarySettings.CloudName,
+				Configuration.GetCloudinarySettings.ApiKey,
+				Configuration.GetCloudinarySettings.ApiSecret
+				//"webapi",
+				//"592423288134115",
+				//"IiyJX9O34h4qbQnd_pKvgelulFo"
 			);
 			_cloudinary = new Cloudinary(acc);
 		}

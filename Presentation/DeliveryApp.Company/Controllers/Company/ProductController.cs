@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using DeliveryApp.Application.Abstractions.Services;
-using DeliveryApp.Application.ViewModels.Product;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Company.ViewModels;
 using DeliveryApp.Domain.Entities;
+using DeliveryApp.Infrastructure.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DeliveryApp.Company.Controllers.Company
 {
-	public class ProductController : Controller
+    public class ProductController : Controller
 	{
 		private readonly ICategoryService _categoryService;
 		private readonly IProductService _productService;
@@ -21,19 +23,26 @@ namespace DeliveryApp.Company.Controllers.Company
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(ProductAction act=ProductAction.IsActive)
 		{
             var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var products =  await _productService.GetAllAsync(userid);
-            var categories = await _categoryService.GetAllCategoryAsync(userid);
-            
-            ProductVM productVM = new()
+            var products =  _productService.GetAll(userid);
+            products = products.Include(x => x.Category);
+            List<Product> list;
+            switch (act)
             {
-                Products =products.ToList(),
-                Categories = categories.ToList()
-            };
-            var product = await _productService.GetAllAsync(userid);
-			return View(productVM);
+                case ProductAction.IsActive:
+                    list = products.Where(x => !x.IsDelete).ToList();
+                    break;
+                case ProductAction.IsPassive:
+                    list=products.Where(x => x.IsDelete).ToList();
+                    break;
+                default:
+                    list = new();
+                    break;
+            }
+            
+			return View(list);
 		}
 
 
@@ -41,7 +50,7 @@ namespace DeliveryApp.Company.Controllers.Company
         {
 			var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			var categories = await _categoryService.GetAllCategoryAsync(userid);
+			var categories = _categoryService.GetAllCategory(userid);
 
 
 			var children = categories.Where(x => x.ParentId != null).AsEnumerable();
@@ -77,7 +86,7 @@ namespace DeliveryApp.Company.Controllers.Company
         {
             Product product;
             var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var categories = await _categoryService.GetAllCategoryAsync(userid);
+            var categories = _categoryService.GetAllCategory(userid);
 
             try
             {
@@ -125,6 +134,7 @@ namespace DeliveryApp.Company.Controllers.Company
             }
             return Redirect(ReturnUrl);
         }
+
 
 	}
 }

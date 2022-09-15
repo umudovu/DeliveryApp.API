@@ -4,12 +4,6 @@ using DeliveryApp.Application.DTOs;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeliveryApp.Persistence.Services
 {
@@ -49,17 +43,20 @@ namespace DeliveryApp.Persistence.Services
 
 		public async Task<Token> RefreshTokenLoginAsync(string refreshToken)
 		{
-			AppUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
-			if (user != null && user?.RefreshTokenEndDate > DateTime.UtcNow)
-			{
-				Token token =await _tokenHandler.CreateAccessTokenAsync(15, user);
-				await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 300);
-				return token;
-			}
-			else
-				throw new Exception("User Not Found");
-		}
+			//AppUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+			//if (user != null && user?.RefreshTokenEndDate > DateTime.UtcNow)
+			//{
+			//	Token token =await _tokenHandler.CreateAccessTokenAsync(15, user);
+			//	await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 300);
+			//	return token;
+			//}
+			//else
+			//	throw new Exception("User Not Found");
 
+			Token token = new();
+			return token;
+
+		}
 		public async Task<bool> Logout()
 		{
 		  await _signInManager.SignOutAsync();

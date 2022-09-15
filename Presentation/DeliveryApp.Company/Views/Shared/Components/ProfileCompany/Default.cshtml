@@ -1,0 +1,62 @@
+﻿@model UpdateCompanyDto
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+						<div class="tab-pane fade height-100-p" id="setting" role="tabpanel">
+											<div class="profile-setting">
+												<form asp-controller="account" asp-action="UpdateProfile" enctype="multipart/form-data">
+													<ul class="profile-edit-list row justify-content-center">
+														<li class="weight-500 col-md-10">
+															<h4 class="text-blue h5 mb-20">Edit Your Personal Setting</h4>
+
+
+															<div class="form-group">
+																<span asp-validation-for="Name" class="text-danger"></span>
+																<label>Company name</label>
+																<input asp-for="Name" class="form-control"  placeholder="Company name">
+
+															</div>
+
+															<div class="form-group">
+																<span asp-validation-for="Adress" class="text-danger"></span>
+																<label>Company address</label>
+																<input asp-for="Adress" class="form-control"  placeholder="Company address">
+
+															</div>
+
+															<div class="form-group">
+																<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+																<label>Company Phone Number</label>
+																<input asp-for="PhoneNumber" class="form-control"  placeholder="Company Phone Number">
+
+															</div>
+
+															<div class="form-group">
+																<label>Company Working hours</label>
+																<div class="d-flex justify-content-evenly">
+																	<input asp-for="StartJob" class="form-control time-picker" placeholder="Select time" type="text">
+																	<input asp-for="EndJob" class="form-control time-picker ml-5" placeholder="Select time" type="text">
+																</div>
+															</div>
+															<div class="form-group">
+																<span asp-validation-for="Description" class="text-danger"></span>
+																<label>Description</label>
+																<input asp-for="Description" class="form-control"  >
+
+															</div>
+															
+															<div class="form-group mb-0">
+																<input type="submit" class="btn btn-primary" value="Update Information">
+															</div>
+														</li>
+														
+													</ul>
+												</form>
+											</div>
+										</div>

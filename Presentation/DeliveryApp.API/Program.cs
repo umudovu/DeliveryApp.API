@@ -1,5 +1,5 @@
-using DeliveryApp.Infrastructure;
-using DeliveryApp.Persistence;
+
+using DeliveryApp.API.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +10,10 @@ ConfigurationManager Configuration = builder.Configuration;
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddPersistenceServices(Configuration);
-builder.Services.AddInfrastructureServices();
 
-builder.Services.AddControllersWithViews()
-    .AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+builder.Services.AddCustomerServiceRegistration(Configuration);
+
+
 
 var app = builder.Build();
 

@@ -2,18 +2,13 @@
 using DeliveryApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeliveryApp.Infrastructure.Services.Token
 {
-	public class TokenHandler:ITokenHandler
+    public class TokenHandler:ITokenHandler
 	{
 		private readonly UserManager<AppUser> _userManager;
 
@@ -33,7 +28,9 @@ namespace DeliveryApp.Infrastructure.Services.Token
 			var roles = await _userManager.GetRolesAsync(user);
 
 			claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-			var secretkey = "f5c0078b-f6f6-42bc-9e48-c37b6ee4bad9";
+
+			var secretkey = Configuration.GetSecretKey;
+
 			SymmetricSecurityKey key =
 					new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretkey));
 			var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -45,8 +42,8 @@ namespace DeliveryApp.Infrastructure.Services.Token
 				Subject = new ClaimsIdentity(claims),
 				Expires = DateTime.Now.AddDays(7),
 				SigningCredentials = credentials,
-				Issuer = "https://localhost:44379",
-				Audience = "https://localhost:44379"
+				Issuer = "https://localhost:44377",
+				Audience = "https://localhost:44377"
 			};
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var tokenS = tokenHandler.CreateToken(tokenDescriptor);
