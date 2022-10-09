@@ -16,6 +16,8 @@ namespace DeliveryApp.Application.Abstractions.Services
 		Task<bool> DeleteCategoryAsync(int id);
 		Task<Category> GetSingleCategoryAsync(int id);
 		IQueryable<Category> GetAllCategory(string userId);
+		IQueryable<Category> GetAllCategory();
+
 		
 	}
 }

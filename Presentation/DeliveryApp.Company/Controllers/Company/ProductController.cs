@@ -53,7 +53,7 @@ namespace DeliveryApp.Company.Controllers.Company
 			var categories = _categoryService.GetAllCategory(userid);
 
 
-			var children = categories.Where(x => x.ParentId != null).AsEnumerable();
+			var children = categories.Where(x => x.ParentId == null).AsEnumerable();
 			ViewBag.Categories = new SelectList(children, "Id", "Name");
 
 			return View();

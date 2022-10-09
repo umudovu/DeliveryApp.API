@@ -17,7 +17,10 @@ namespace DeliveryApp.Domain.Entities
 		public string? EndJob { get; set; }
 		public double Balance { get; set; }
 
-		public string? ImageUrl { get; set; }
+        public double ServiceFee { get; set; }
+        public string? ServiceTime { get; set; }
+
+        public string? ImageUrl { get; set; }
 		public string? ImagePublicId { get; set; }
 
 		public string? AppUserId { get; set; }

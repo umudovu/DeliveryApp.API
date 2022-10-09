@@ -10,16 +10,18 @@ namespace DeliveryApp.Domain.Entities
 {
 	public class Category : BaseEntity
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public Nullable<int> ParentId { get; set; }
         public string? ImageUrl { get; set; }
         public string? ImagePublicId { get; set; }
-        public ICollection<Category> Children { get; set; }
-        public Category Parent { get; set; }
-        public ICollection<Product> Products { get; set; }
+
+        public ICollection<Category>? Children { get; set; }
+        public Category? Parent { get; set; }
+
+        public ICollection<Product>? Products { get; set; }
 
 		public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
 
 
 

@@ -1,13 +1,13 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.Abstractions.Token;
-using DeliveryApp.Application.DTOs;
 using DeliveryApp.Application.DTOs.User;
+using DeliveryApp.Application.Models;
 using DeliveryApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace DeliveryApp.Persistence.Services
 {
-	public class AuthService : IAuthService
+    public class AuthService : IAuthService
 	{
 		readonly UserManager<AppUser> _userManager;
 		readonly SignInManager<AppUser> _signInManager;
@@ -63,5 +63,16 @@ namespace DeliveryApp.Persistence.Services
 			return true;
 
 		}
-	}
+        
+        public async Task<SignInResult> LoginMvcAsync(LoginDto loginDto)
+        {
+			AppUser user = await _userManager.FindByEmailAsync(loginDto.Email);
+			if (user == null)
+				throw new Exception("User Not Found");
+
+			SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, true);
+			await _signInManager.PasswordSignInAsync(user, loginDto.Password, true, true);
+			return result;
+		}
+    }
 }

@@ -8,6 +8,10 @@ namespace DeliveryApp.Application.DTOs.Category
 {
 	public class CategoryResponse
 	{
-		public string Name { get; set; }
-	}
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string ImageUrl { get; set; }
+        public int CompanyId { get; set; }
+        public List<ProductResponse>? Products { get; set; }
+    }
 }

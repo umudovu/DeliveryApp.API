@@ -9,8 +9,9 @@ namespace DeliveryApp.Application.Abstractions.Services.Authentications
 {
     public interface IInternalAuthentication
     {
-        Task<DTOs.Token> LoginAsync(LoginDto loginDto);
-        Task<DTOs.Token> RefreshTokenLoginAsync(string refreshToken);
+        Task<Models.Token> LoginAsync(LoginDto loginDto);
+        Task<Models.Token> RefreshTokenLoginAsync(string refreshToken);
+        Task<Microsoft.AspNetCore.Identity.SignInResult> LoginMvcAsync(LoginDto loginDto);
         Task<bool> Logout();
     }
 }

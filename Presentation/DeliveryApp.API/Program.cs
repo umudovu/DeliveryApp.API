@@ -25,7 +25,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseCors(p => p
+    .WithOrigins("http://localhost:3001", "http://localhost:3000")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials());
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

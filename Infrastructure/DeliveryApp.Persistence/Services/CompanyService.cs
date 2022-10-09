@@ -4,9 +4,11 @@ using DeliveryApp.Application.Repositories;
 using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 using DeliveryApp.Infrastructure.Enums;
+using DeliveryApp.Persistence.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DeliveryApp.Persistence.Services
 {
@@ -15,17 +17,19 @@ namespace DeliveryApp.Persistence.Services
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ICompanyRepository _companyRepository;
 		private readonly IPhotoService _photoService;
-		public CompanyService(UserManager<AppUser> userManager, ICompanyRepository companyRepository,
-			IPhotoService photoService)
-		{
-			_userManager = userManager;
-			_companyRepository = companyRepository;
-			_photoService = photoService;
-		}
+		private readonly AppDbContext _context;
+        public CompanyService(UserManager<AppUser> userManager, ICompanyRepository companyRepository,
+            IPhotoService photoService, AppDbContext context)
+        {
+            _userManager = userManager;
+            _companyRepository = companyRepository;
+            _photoService = photoService;
+            _context = context;
+        }
 
-		public async Task<CreateUserResponse> CreateAsync(RegisterCompanyVM model)
+        public async Task<CreateUserResponse> CreateAsync(RegisterCompanyVM model)
 		{
-			var imageResult = await _photoService.AddPhotoAsync(model.Photo);
+			//var imageResult = await _photoService.AddPhotoAsync(model.Photo);
 			AppUser user = new()
 			{
 				Email = model.Email,
@@ -49,9 +53,10 @@ namespace DeliveryApp.Persistence.Services
 			
 			//f (result.Error != null) return BadRequest(result.Error.Message);
 
-			bool companySaveResult =await _companyRepository.SaveAsync();
+			
 
 			await _userManager.AddToRoleAsync(user, AppRole.Company.ToString());
+			bool companySaveResult = await _companyRepository.SaveAsync();
 
 			CreateUserResponse response = new() { Succeeded = result.Succeeded };
 
@@ -118,5 +123,27 @@ namespace DeliveryApp.Persistence.Services
 			}
 			return false;
 		}
+
+
+		public IQueryable<Company> GetAllCompany()
+        {
+			var query = _companyRepository.GetAll(false);
+			query = query.Include(x => x.Products)
+					.Include(x=>x.Categories).ThenInclude(x=>x.Products)
+					.OrderByDescending(x=>x.CreatedDate);
+
+			return query;
+        }
+
+		public async Task<Company> GetCompanyByIdAsync(int id)
+        {
+			var company = await _context.Companies
+				.Include(x=>x.Categories)
+				.ThenInclude(x=>x.Products)
+				.FirstOrDefaultAsync(x=>x.Id==id);
+			
+
+			return company;
+        }
 	}
 }

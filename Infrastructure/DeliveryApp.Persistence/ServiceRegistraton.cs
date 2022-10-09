@@ -22,9 +22,9 @@ namespace DeliveryApp.Persistence
             {
                 opt.Password.RequiredLength = 8;
                 opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireUppercase = true;
-                opt.Password.RequireLowercase = true;
-                opt.Password.RequireDigit = true;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireDigit = false;
 
                 opt.User.RequireUniqueEmail = true;
                 opt.Lockout.MaxFailedAccessAttempts = 10;

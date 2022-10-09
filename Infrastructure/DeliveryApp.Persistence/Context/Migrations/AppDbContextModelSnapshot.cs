@@ -108,7 +108,6 @@ namespace DeliveryApp.Persistence.Context.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ParentId")
@@ -169,6 +168,12 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
                     b.Property<DateTime>("RemovedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("ServiceFee")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ServiceTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StartJob")
                         .HasColumnType("nvarchar(max)");

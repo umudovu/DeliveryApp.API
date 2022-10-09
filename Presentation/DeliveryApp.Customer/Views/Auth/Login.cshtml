@@ -1,0 +1,90 @@
+﻿@model LoginDto
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from askbootstrap.com/preview/foodride/theme/signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Oct 2022 15:08:37 GMT -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Gurdeep Osahan">
+<meta name="author" content="Gurdeep Osahan">
+<link rel="icon" type="image/png" href="img/logo_web_red.png">
+<title>Foodride - Online Food Ordering Website Template</title>
+
+<link rel="stylesheet" type="text/css" href="~/vendor/slick/slick.min.css" />
+<link rel="stylesheet" type="text/css" href="~/vendor/slick/slick-theme.min.css" />
+
+<link href="~/vendor/icons/feather.css" rel="stylesheet" type="text/css">
+
+<link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="~/css/style.css" rel="stylesheet">
+
+<link href="~/vendor/sidebar/demo.css" rel="stylesheet">
+</head>
+<body>
+<div class="osahan-signup login-page">
+<video loop autoplay muted id="vid">
+<source src="~/img/bg.mp4" type="video/mp4">
+<source src="~/img/bg.mp4" type="video/ogg">
+Your browser does not support the video tag.
+</video>
+<div class="d-flex align-items-center justify-content-center flex-column vh-100">
+<div class="px-5 col-md-6 ml-auto">
+<div class="px-5 col-10 mx-auto">
+<h2 class="text-dark my-0">Hello There.</h2>
+<p class="text-50">Sign up to continue</p>
+<form class="mt-5 mb-4" method="post" enctype="multipart/form-data">
+
+ <div class="form-group">
+<label asp-for="Email" class="text-dark">Email</label>
+<input  placeholder="Enter Email" class="form-control" asp-for="Email" aria-describedby="emailHelp">
+</div>
+<div class="form-group">
+<label asp-for="Password" class="text-dark">Password</label>
+<input placeholder="Enter Password" class="form-control" asp-for="Password">
+</div>
+
+<button type="submit" class="btn btn-primary btn-lg btn-block">
+SIGN UP
+</button>
+@*<div class="py-2">
+<button class="btn btn-facebook btn-lg btn-block"><i class="feather-facebook"></i> Connect with Facebook</button>
+</div>*@
+</form>
+</div>
+
+<a asp-action="forgot" class="text-decoration-none">
+<p class="text-center">Forgot your password?</p>
+</a>
+<div class="d-flex align-items-center justify-content-center">
+<a asp-action="register">
+<p class="text-center m-0">Don't have an account? Sign up</p>
+</a>
+</div>
+</div>
+</div>
+</div>
+
+<script type="c08a8985e095fe6c7772bbf8-text/javascript" src="vendor/jquery/jquery.min.js"></script>
+<script type="c08a8985e095fe6c7772bbf8-text/javascript" src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="c08a8985e095fe6c7772bbf8-text/javascript" src="vendor/slick/slick.min.js"></script>
+
+<script type="c08a8985e095fe6c7772bbf8-text/javascript" src="vendor/sidebar/hc-offcanvas-nav.js"></script>
+
+<script type="c08a8985e095fe6c7772bbf8-text/javascript" src="js/osahan.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <!-- Asp Jquery Validation cdn-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+
+</html>

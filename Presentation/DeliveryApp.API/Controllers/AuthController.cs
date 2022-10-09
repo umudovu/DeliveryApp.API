@@ -1,6 +1,6 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
-using DeliveryApp.Application.DTOs;
 using DeliveryApp.Application.DTOs.User;
+using DeliveryApp.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +29,7 @@ namespace DeliveryApp.API.Controllers
             catch (Exception ex)
             {
 
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             
         }

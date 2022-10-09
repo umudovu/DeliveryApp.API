@@ -17,9 +17,10 @@ namespace DeliveryApp.Infrastructure.Services.Token
 			_userManager = userManager;
 		}
 
-		public async Task<Application.DTOs.Token> CreateAccessTokenAsync(int second, AppUser user)
+		public async Task<Application.Models.Token> CreateAccessTokenAsync(int second, AppUser user)
 		{
-			Application.DTOs.Token token = new();
+			Application.Models.Token token = new();
+
 			var claims = new List<Claim>
 			{
 				new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
@@ -42,8 +43,9 @@ namespace DeliveryApp.Infrastructure.Services.Token
 				Subject = new ClaimsIdentity(claims),
 				Expires = DateTime.Now.AddDays(7),
 				SigningCredentials = credentials,
+
 				Issuer = "https://localhost:44377",
-				Audience = "https://localhost:44377"
+				Audience = "https://localhost:44377",
 			};
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var tokenS = tokenHandler.CreateToken(tokenDescriptor);

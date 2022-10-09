@@ -18,5 +18,7 @@ namespace DeliveryApp.Application.Abstractions.Services
 
 		Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate);
 		Company GetCompany(string userId);
+		IQueryable<Company> GetAllCompany();
+		Task<Company> GetCompanyByIdAsync(int id);
 	}
 }

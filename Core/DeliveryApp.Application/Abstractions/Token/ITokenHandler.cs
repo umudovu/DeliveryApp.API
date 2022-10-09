@@ -9,7 +9,7 @@ namespace DeliveryApp.Application.Abstractions.Token
 {
     public interface ITokenHandler
     {
-        Task<DTOs.Token> CreateAccessTokenAsync(int second, AppUser user);
+        Task<Models.Token> CreateAccessTokenAsync(int second, AppUser user);
         string CreateRefreshToken();
     }
 }

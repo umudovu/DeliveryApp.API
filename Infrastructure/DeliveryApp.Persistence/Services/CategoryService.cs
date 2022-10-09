@@ -2,6 +2,8 @@
 using DeliveryApp.Application.Repositories;
 using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
+using DeliveryApp.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryApp.Persistence.Services
 {
@@ -11,13 +13,15 @@ namespace DeliveryApp.Persistence.Services
 		public readonly ICompanyService _companyService;
 		public readonly ICategoryRepository _categoryRepository;
 		private readonly IPhotoService _photoService;
+		private readonly AppDbContext _context;
 
         public CategoryService(ICompanyService companyService, ICategoryRepository categoryRepository,
-								IPhotoService photoService)
+                                IPhotoService photoService, AppDbContext context)
         {
             _companyService = companyService;
             _categoryRepository = categoryRepository;
             _photoService = photoService;
+            _context = context;
         }
 
         public async Task<bool> AddCategoryAsync(CategoryCreateVM categoryVM, string userId)
@@ -99,5 +103,16 @@ namespace DeliveryApp.Persistence.Services
 		{
 			return await _categoryRepository.GetSingleAsync(x => x.Id == id);
 		}
-	}
+
+        public IQueryable<Category> GetAllCategory()
+        {
+			var query = _context.Categories
+					.Include(x => x.Company)
+					.Where(x=>x.ParentId==null)
+					.OrderByDescending(x=>x.CreatedDate);
+
+			return query;
+
+        }
+    }
 }

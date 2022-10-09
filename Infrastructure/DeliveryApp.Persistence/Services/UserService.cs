@@ -1,6 +1,7 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Domain.Entities;
+using DeliveryApp.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
 
 namespace DeliveryApp.Persistence.Services
@@ -8,33 +9,50 @@ namespace DeliveryApp.Persistence.Services
 	public class UserService : IUserService
 	{
 		readonly UserManager<AppUser> _userManager;
-        public UserService(UserManager<AppUser> userManager)
+		private readonly AppDbContext _context;
+        public UserService(UserManager<AppUser> userManager, AppDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         public async Task<CreateUserResponse> CreateAsync(CreateUser model)
 		{
-			IdentityResult result = await _userManager.CreateAsync(new()
+
+			AppUser user = new()
 			{
-				UserName = model.Username,
+				UserName = model.Email,
 				Email = model.Email,
-			}, model.Password);
+				PhoneNumber = model.PhoneNumber,
+			};
+
+			IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
 			Customer customer = new()
 			{
 				Name = model.Name,
 				SurName = model.SurName,
 				Address = model.Address,
+				AppUserId = user.Id
 			};
+
+			
 
 			CreateUserResponse response = new() { Succeeded = result.Succeeded };
 
 			if (result.Succeeded)
+            {
 				response.Message = "The user has been successfully created.";
-			else
+				await _context.AddAsync(customer);
+				await _context.SaveChangesAsync();
+			}
+
+            else
+            {
 				foreach (var error in result.Errors)
 					response.Message += $"{error.Code} - {error.Description}\n";
+			}
+				
 
 			return response;
 
