@@ -1,0 +1,187 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+
+
+<div class="osahan-checkout">
+<div class="d-none">
+<div class="bg-primary border-bottom p-3 d-flex align-items-center">
+<a class="toggle togglew toggle-2" href="#"><span></span></a>
+<h4 class="font-weight-bold m-0 text-white">Checkout</h4>
+</div>
+</div>
+
+<div class="container position-relative">
+<div class="py-5 row">
+<div class="col-md-8 mb-3">
+<div>
+<div class="osahan-cart-item mb-3 rounded shadow-sm bg-white overflow-hidden">
+<div class="osahan-cart-item-profile bg-white p-3">
+<div class="d-flex flex-column">
+<h6 class="mb-3 font-weight-bold">Check Address</h6>
+<div class="row">
+<div id="map" class="custom-control col-12 custom-radio mb-3 position-relative border-custom-radio">
+     
+
+</div>@*
+<div class="custom-control col-lg-6 custom-radio position-relative border-custom-radio">
+<input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+<label class="custom-control-label w-100" for="customRadioInline2">
+<div>
+<div class="p-3 rounded bg-white shadow-sm w-100">
+<div class="d-flex align-items-center mb-2">
+<h6 class="mb-0">Work</h6>
+<p class="mb-0 badge badge-light ml-auto"><i class="icofont-check-circled"></i> Select</p>
+</div>
+<p class="small text-muted m-0">Model Town, Ludhiana</p>
+<p class="small text-muted m-0">Punjab 141002, India</p>
+</div>
+<a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-block btn-light border-top">Edit</a>
+</div>
+</label>
+</div>*@
+</div>
+</div>
+</div>
+</div>
+<div class="accordion mb-3 rounded shadow-sm bg-white overflow-hidden" id="accordionExample">
+<div class="osahan-card bg-white border-bottom overflow-hidden">
+<div class="osahan-card-header" id="headingOne">
+<h2 class="mb-0">
+<button class="d-flex p-3 align-items-center btn btn-link w-100" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+<i class="feather-credit-card mr-3"></i> Credit/Debit Card
+<i class="feather-chevron-down ml-auto"></i>
+</button>
+</h2>
+</div>
+<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+<div class="osahan-card-body border-top p-3">
+<h6 class="m-0">Add new card</h6>
+<p class="small">WE ACCEPT <span class="osahan-card ml-2 font-weight-bold">( Master Card / Visa Card / Rupay )</span></p>
+<form>
+<div class="form-row">
+<div class="col-md-12 form-group">
+<label class="form-label font-weight-bold small">Card number</label>
+<div class="input-group">
+<input placeholder="Card number" type="number" class="form-control">
+<div class="input-group-append"><button type="button" class="btn btn-outline-secondary"><i class="feather-credit-card"></i></button></div>
+</div>
+</div>
+<div class="col-md-8 form-group"><label class="form-label font-weight-bold small">Valid through(MM/YY)</label><input placeholder="Enter Valid through(MM/YY)" type="number" class="form-control"></div>
+<div class="col-md-4 form-group"><label class="form-label font-weight-bold small">CVV</label><input placeholder="Enter CVV Number" type="number" class="form-control"></div>
+ <div class="col-md-12 form-group"><label class="form-label font-weight-bold small">Name on card</label><input placeholder="Enter Card number" type="text" class="form-control"></div>
+<div class="col-md-12 form-group mb-0">
+<div class="custom-control custom-checkbox"><input type="checkbox" id="custom-checkbox1" class="custom-control-input"><label title="" type="checkbox" for="custom-checkbox1" class="custom-control-label small pt-1">Securely save this card for a faster checkout next time.</label></div>
+</div>
+<div class="p-3 w-100">
+<button class="btn btn-success btn-block btn-lg" 
+   type="submit"
+>PAY <span id="toPay"></span><i class="feather-arrow-right"></i></button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+  @*card item*@
+
+        @await Component.InvokeAsync("Basket")
+
+</div>
+</div>
+</div>
+<style>
+    #map {
+  height: 300px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+}
+.custom-map-control-button {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  height: 40px;
+  cursor: pointer;
+}
+.custom-map-control-button:hover {
+  background: rgb(235, 235, 235);
+}
+</style>
+
+<script>
+    let map, infoWindow;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 40.4241061, lng: 49.8226989 },
+    zoom: 15,
+  });
+  infoWindow = new google.maps.InfoWindow();
+
+  const locationButton = document.createElement("button");
+
+  locationButton.textContent = "Pan to Current Location";
+  locationButton.classList.add("custom-map-control-button");
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+  locationButton.addEventListener("click", () => {
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          infoWindow.setPosition(pos);
+          infoWindow.setContent("You");
+          infoWindow.open(map);
+          map.setCenter(pos);
+
+          localStorage.setItem("uselocation", JSON.stringify(pos))
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  });
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(
+    browserHasGeolocation
+      ? "Error: The Geolocation service failed."
+      : "Error: Your browser doesn't support geolocation."
+  );
+  infoWindow.open(map);
+}
+
+window.initMap = initMap;
+</script>
+<script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFpqjXIt_kVyWqK3_9mrCXD5_hASViWus&callback=initMap&v=weekly"
+      defer
+    ></script>
+@section Scripts{
+<script type="11efad072887e2e154cdf8b5-text/javascript" src="~/js/basket.js"></script>
+    
+}

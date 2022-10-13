@@ -7,6 +7,7 @@ body {
     background: #f5f5f5
 }
 
+
 .slick-slider {
     margin: 0 -8px
 }
@@ -1335,4 +1336,10 @@ footer .text-muted {
         flex: unset !important;
         max-width: 100%
     }
+}
+
+
+.itemsChart {
+    height: 100px;
+    overflow:hidden;
 }

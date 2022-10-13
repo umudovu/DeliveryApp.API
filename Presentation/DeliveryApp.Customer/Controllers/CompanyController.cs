@@ -37,10 +37,9 @@ namespace DeliveryApp.Customer.Controllers
 
                 return View(company);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return BadRequest(ex.Message);
             }
         }
     }
