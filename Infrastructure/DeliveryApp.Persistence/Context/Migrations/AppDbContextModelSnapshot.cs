@@ -136,6 +136,9 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Adress")
                         .HasColumnType("nvarchar(max)");
 
@@ -158,6 +161,12 @@ namespace DeliveryApp.Persistence.Context.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LatCoord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LngCoord")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -229,18 +238,6 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -256,12 +253,16 @@ namespace DeliveryApp.Persistence.Context.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymantMethod")
+                    b.Property<string>("LatCoord")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LngCoord")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

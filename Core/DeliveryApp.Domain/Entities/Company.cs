@@ -17,7 +17,11 @@ namespace DeliveryApp.Domain.Entities
 		public string? EndJob { get; set; }
 		public double Balance { get; set; }
 
-        public double ServiceFee { get; set; }
+        public string? Address { get; set; }
+        public string? LatCoord { get; set; }
+		public string? LngCoord { get; set; }
+
+		public double ServiceFee { get; set; }
         public string? ServiceTime { get; set; }
 
         public string? ImageUrl { get; set; }

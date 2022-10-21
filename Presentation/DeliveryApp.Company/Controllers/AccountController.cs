@@ -1,6 +1,7 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Application.ViewModels;
+using DeliveryApp.Company.ViewModels;
 using DeliveryApp.Domain.Entities;
 using DeliveryApp.Infrastructure.Enums;
 using Microsoft.AspNetCore.Identity;
@@ -49,10 +50,25 @@ namespace DeliveryApp.Company.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto,string returnUrl)
         {
-            await _authService.LoginAsync(loginDto);
-            return RedirectToAction("index", "dashboard");
+
+            try
+            {
+                await _authService.LoginAsync(loginDto);
+                if (returnUrl != null) return Redirect(returnUrl);
+                return RedirectToAction("index", "dashboard");
+            }
+            catch (Exception)
+            {
+                return View(loginDto);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult>SetAddress([FromBody]AddressVM address)
+        {
+            return Ok(address);
         }
 
 

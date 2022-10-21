@@ -28,7 +28,7 @@ namespace DeliveryApp.Persistence.Services
 
 			IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
-			Customer customer = new()
+			DeliveryApp.Domain.Entities.Customer customer = new()
 			{
 				Name = model.Name,
 				SurName = model.SurName,

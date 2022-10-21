@@ -9,7 +9,10 @@ namespace DeliveryApp.API.Extentions
         {
             services.AddPersistenceServices(config);
             services.AddInfrastructureServices();
-            
+            services.AddSession(opt =>
+            {
+                opt.IdleTimeout = TimeSpan.FromDays(22);
+            });
 
 
 

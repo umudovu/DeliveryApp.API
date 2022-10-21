@@ -1,4 +1,4 @@
-﻿
+﻿@model Company
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,7 +7,7 @@
 
 <div class="card-box pd-20 height-100-p mb-30">
 			
-			</div>
+</div>
 			<div class="row">
 				<div class="col-xl-3 mb-30">
 					<div class="card-box height-100-p widget-style1">
@@ -121,6 +121,42 @@
 			</div>
 
 
+	@if(Model.Address==null){
+
+		<div >
+		<a href="#warning-modal" data-backdrop="static"  data-toggle="modal" data-target="#warning-modal">aaaa</a>
+		<div data-backdrop="static"  class="modal show" id="warning-modal" tabindex="-1" role="dialog" 
+			aria-labelledby="myLargeModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-md modal-dialog-centered">
+									<div class="modal-content bg-warning">
+										<div class="modal-body text-center">
+											<h3 class="mb-15"><i class="fa fa-exclamation-triangle"></i> Warning</h3>
+											<p>Select address</p>
+											<div class="form-group mb-0">
+												<input type="text" id="addressSearch" class="form-control search-input" placeholder="Search Here">
+												
+											</div>
+											<div class="list-group my-3" id="listArea" style="min-height:50px">
+												
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+	</div>
+	<script>
+		$(window).load(function()
+{
+    $('#warning-modal').modal('show');
+});
+
+	</script>
+	<script src="~/js/searchaddress.js"></script>
+	}
+
+	
+
 @section Scripts{
 	<script src="~/src/apexcharts/apexcharts.min.js"></script>
 	<script src="~/src/datatables/js/jquery.dataTables.min.js"></script>
@@ -129,5 +165,6 @@
 	<script src="~/src/datatables/js/responsive.bootstrap4.min.js"></script>
 	<script src="~/src/datatables/js/responsive.bootstrap4.min.js"></script>
 	<script src="~/src/scripts/dashboard.js"></script>
+	
 
 		}

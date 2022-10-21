@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\DeliveryApp.Application\DeliveryApp.Application.csproj" />
+    <ProjectReference Include="..\..\Core\DeliveryApp.Domain\DeliveryApp.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\DeliveryApp.Infrastructure\DeliveryApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\DeliveryApp.Persistence\DeliveryApp.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

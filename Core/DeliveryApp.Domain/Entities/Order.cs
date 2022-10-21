@@ -14,11 +14,9 @@ namespace DeliveryApp.Domain.Entities
         public string PhoneNumber { get; set; }
         public string InvoiceNo { get; set; }
         public string TrackingNo { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-        public string Address { get; set; }
+        public string LatCoord { get; set; }
+        public string LngCoord { get; set; }
         public string Email { get; set; }
-        public string PaymantMethod { get; set; }
         public double TotalPrice { get; set; }
         public OrderStatus OrderStatus { get; set; }
 
@@ -28,6 +26,7 @@ namespace DeliveryApp.Domain.Entities
     }
     public enum OrderStatus
     {
+        Unpaid,
         Processing,
         Shipped,
         Completed,
