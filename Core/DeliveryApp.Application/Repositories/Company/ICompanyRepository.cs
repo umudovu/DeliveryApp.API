@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DeliveryApp.Application.Repositories
 {
-	public interface ICompanyRepository:IRepository<Company>
+	public interface ICompanyRepository:IRepository<DeliveryApp.Domain.Entities.Company>
     {
     }
 }

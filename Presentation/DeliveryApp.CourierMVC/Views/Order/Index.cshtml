@@ -1,5 +1,91 @@
-﻿@*
+﻿@model List<Order>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+<style>
+    .card:hover{
+        opacity: 0.9;
+    }
+    .orderhref:hover{
+         text-decoration: none;
+    }
+</style>
+<div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="row">
+                <div class="col-12 col-xl-8 mb-1 mb-xl-0">
+                  <h3 class="font-weight-bold">Pending orders</h3>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+           </div>
+<div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row ">
+              
+             
+
+<div class="container">
+    <div class="row">
+     <div class="col-12 grid-margin transparent">
+              @foreach (var item in Model)
+              {
+                  <a class="orderhref" asp-action="detail" asp-route-id="@item.Id">
+                      <div class="row">
+                <div class="col-12 mb-2 stretch-card transparent pb-0">
+                  <div class="card text-white bg-info hover-cursor" >
+                    <div class="card-body justify-content-center">
+                        <div class="container-fluid justify-content-center">
+
+                            <div class="row">
+                                <p class="mb-1">
+                                  <div class="col-lg-6 col-md-12 col-sm-12">
+                                      <i style="font-size:1.3rem" class="fa-solid fa-location-arrow mr-1"></i> <span style="font-size:1.3rem">@item.Company.Address</span>
+                                  </div>
+                                   <div class="col-lg-6 col-md-12 col-sm-12">
+                                      <i style="font-size:1.3rem" class="fa-solid fa-location-dot mr-1"></i> <span style="font-size:1.3rem">@item.Address</span>
+                                  </div>
+                              </p>
+                            </div>
+                            <div class="row d-flex justify-content-between mt-1 mb-0">
+                                <div class="col-4">
+                                    <p>
+                                        <i style="font-size:1.3rem" class="fa-solid fa-money-bill-wave"></i>
+                                        <span class="ml-1">@item.Company.ServiceFee AZN</span>
+                                    </p>
+                                </div>
+                                <div class="col-8 d-flex justify-content-end">
+                                    <p>
+                                        <i style="font-size:1.3rem" class="fa-regular fa-clock ml-3"></i>
+                                        <span class="ml-2">@item.CreatedDate.ToLongTimeString() </span>
+                                    </p>
+                                    <p>
+                                        <i style="font-size:1.3rem" class="fa-regular fa-building ml-3"></i>
+                                        <span class="ml-2">@item.Company.Name </span>
+                                    </p>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+                  </a>
+              }
+     </div>
+</div>
+</div>
+
+
+             </div>
+          </div>
+        </div>

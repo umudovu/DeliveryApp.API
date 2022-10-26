@@ -1,5 +1,6 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs;
+using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Customer.Extentions;
 using DeliveryApp.Customer.Models;
 using DeliveryApp.Domain.Entities;
@@ -36,9 +37,33 @@ namespace DeliveryApp.Customer.Controllers
             return RedirectToAction("checkout");
         }
 
+        public async Task<IActionResult> MyOrder()
+        {
+            if (!User.Identity.IsAuthenticated) return RedirectToAction("login", "error");
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var customer = _customerService.GetCustomer(user.Id);
+            var orders = await _orderService.GetAllAsync();
+
+            orders = orders.Where(x => x.CustomerId == customer.Id).OrderByDescending(x=>x.CreatedDate);
+
+            return View(orders.ToList());
+        }
+
+        public IActionResult Track()
+        {
+            return RedirectToAction("checkout");
+        }
+
+        public async Task<IActionResult> Detail(int? id)
+        {
+            if (id == null) return RedirectToAction("empty", "error");
+            var order = await _orderService.GetOrderByIdAsync(id);
+            return View(order);
+        }
+
         public IActionResult Checkout()
         {
-            if (!User.Identity.IsAuthenticated) return RedirectToAction("register", "error");
+            if (!User.Identity.IsAuthenticated) return RedirectToAction("login", "error");
 
             var isBasket = Request.Cookies["basket"];
             if(isBasket==null) return RedirectToAction("empty", "error");
@@ -50,52 +75,95 @@ namespace DeliveryApp.Customer.Controllers
         }
 
 
-        public async Task<IActionResult> Confirm(string phoneNumber,string latitude,string longitude)
+        public async Task<IActionResult> Confirm(string phoneNumber,string latitude,string longitude, string address)
+       
         {
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var customer = _customerService.GetCustomer(user.Id);
 
+            List<Company> companies = new();
+            List<Order> orders = new();
             List<BasketVM> basket = JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies["basket"]);
 
-            Order order = new()
-            {
-                UserId = user.Id,
-                FirstName = customer.Name,
-                SurName = customer.SurName,
-                PhoneNumber = phoneNumber,
-                InvoiceNo = RandomNumber.RandomString(7),
-                TrackingNo = RandomNumber.RandomStringAll(11),
-                LatCoord=latitude,
-                LngCoord=longitude,
-                Email=user.Email,
-                OrderStatus = OrderStatus.Unpaid
-            };
+            var dbCompanies = _companyService.GetAllCompany();
 
-            _context.Orders.Add(order);
+            foreach (var b in basket)
+            {
+                var product = _context.Products.Find(b.Id);
+
+                var company = await _companyService.GetCompanyByIdAsync(product.CompanyId);
+
+                if(companies.FirstOrDefault(x=>x.Id==company.Id)==null)
+                {
+                    companies.Add(company);
+                    dbCompanies = dbCompanies.Where(x => x.Id == company.Id);
+                }
+
+
+            }
+            foreach (var c in companies)
+            {
+                Order order = new()
+                {
+                    FirstName = customer.Name,
+                    SurName = customer.SurName,
+                    PhoneNumber = phoneNumber,
+                    InvoiceNo = RandomNumber.RandomString(7),
+                    TrackingNo = RandomNumber.RandomStringAll(11),
+                    Address = address,
+                    LatCoord = latitude,
+                    LngCoord = longitude,
+                    Email = user.Email,
+                    OrderStatus = OrderStatus.Unpaid,
+                    CreatedDate = DateTime.Now,
+                    CustomerId = customer.Id,
+                    CompanyId=c.Id
+                };
+                orders.Add(order);
+            }
+
+            
+
+            _context.Orders.AddRange(orders);
             _context.SaveChanges();
+
             List<OrderItem> orderItems = new();
 
-            foreach (BasketVM pr in basket)
-            {
-                var dbProduct = await _context.Products.FindAsync(pr.Id);
-                OrderItem orderItem = new()
-                {
-                    ProductId=pr.Id,
-                    ProductCount=pr.BasketCount,
-                    Price =dbProduct.Price,
-                    Total = pr.BasketCount * dbProduct.Price,
-                    OrderId = order.Id
+            List<int> orderIds = new();
 
-                };
-                order.TotalPrice += pr.Price * pr.BasketCount;
-                orderItems.Add(orderItem);
+            foreach (var o in orders)
+            {
+                foreach (BasketVM pr in basket)
+                {
+                    var dbProduct = await _context.Products.FindAsync(pr.Id);
+                    if (dbProduct.CompanyId==o.CompanyId)
+                    {
+                        OrderItem orderItem = new()
+                        {
+                            ProductId = pr.Id,
+                            ProductCount = pr.BasketCount,
+                            Price = dbProduct.Price,
+                            Total = pr.BasketCount * dbProduct.Price,
+                            OrderId = o.Id,
+
+
+                        };
+                        o.TotalPrice += pr.Price * pr.BasketCount;
+                        orderItems.Add(orderItem);
+                    }
+                    
+                }
+                orderIds.Add(o.Id);
             }
+           
+
+            
             _context.OrderItems.AddRange(orderItems);
             _context.SaveChanges();
             //bool isOk= _orderService.CreateOrder(order, orderItems);
 
-            Response.Cookies.Append("oi", JsonConvert.SerializeObject(order.Id));
+            Response.Cookies.Append("oi", JsonConvert.SerializeObject(orderIds));
 
             return Ok();
         }
@@ -103,18 +171,27 @@ namespace DeliveryApp.Customer.Controllers
        
 
         
-        public async Task<IActionResult> Cash(bool isOrder,int orderId)
+        public async Task<IActionResult> Cash(bool isOrder,List<int> orderIds)
         {
             if (isOrder == false) return RedirectToAction("invalid", "error");
 
-            var order = _context.Orders.FirstOrDefault(x=>x.Id==orderId);
-            if (order == null) return BadRequest("Order not found");
+            List<Order> orders = new();
+            foreach (var oi in orderIds)
+            {
+                var order = await _context.Orders.FindAsync(oi);
+                orders.Add(order);
+            }
 
-            order.OrderStatus = OrderStatus.Processing;
+            foreach (var o in orders)
+            {
+                o.OrderStatus = OrderStatus.Processing;
+            }
+            
+            _context.SaveChanges();
 
             Response.Cookies.Delete("basket");
 
-            return RedirectToAction("index","home");
+            return RedirectToAction("successful", "info");
         }
 
 
@@ -123,11 +200,11 @@ namespace DeliveryApp.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Pay()
         {
-            int orderId = JsonConvert.DeserializeObject<int>(Request.Cookies["oi"]);
+            List<int> orderId = JsonConvert.DeserializeObject<List<int>>(Request.Cookies["oi"]);
 
             Response.Cookies.Delete("oi");
 
-            return RedirectToAction("Cash", new {isOrder=true,orderId=orderId});
+            return RedirectToAction("Cash", new {isOrder=true,orderIds=orderId});
 
         }
 

@@ -1,0 +1,175 @@
+﻿@model Order
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    #floating-panel {
+  position: absolute;
+  top: 10px;
+  right: 20%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: "Roboto", "sans-serif";
+  line-height: 30px;
+  padding-left: 10px;
+}
+#map {
+  height: 500px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+}
+
+#maparea{
+    position:relative;
+}
+</style>
+
+<div class="content-wrapper pb-0 mb-4">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="row">
+                <div class="col-12 col-xl-8 mb-1 mb-xl-0">
+                  <h3 class="font-weight-bold">Order detail</h3>
+                </div>
+                
+               
+              </div>
+              <div class="row">
+                 <div class="ml-3">
+                    <p>
+                         <i style="font-size:1.1rem" class="fa-solid fa-location-arrow mr-1"></i> <span id="originadd" style="font-size:1rem"></span>
+                         <span class="my-1"><i class="fa-solid fa-arrow-right"></i></span>
+                         <i style="font-size:1.1rem" class="fa-solid fa-location-dot mr-1"></i> <span id="destinatiosadd" style="font-size:1rem"></span>
+                         <span class="my-1">, estimated distance</span>
+                         <span class="ml-2" id="distance"></span>
+                         <span class="my-1">, estimated time</span>
+                         <span class="ml-2" id="duration"></span>
+                    </p>
+                </div>
+              </div>
+              <div class="row mt-4">
+                  <a asp-action="confirm" asp-route-id="@Model.Id" class="btn btn-outline-primary">Accept order</a>
+                  <a asp-action="index" class="btn btn-outline-dark ml-4">Back to orders</a>
+              </div>
+            </div>
+          </div>
+           </div>
+<div id="maparea" class="container">
+    <div id="floating-panel">
+      <b>Mode of Travel: </b>
+      <select id="mode">
+        <option value="DRIVING">Driving</option>
+        <option value="WALKING">Walking</option>
+        <option value="TRANSIT">Transit</option>
+      </select>
+    </div>
+    <div id="map"></div>
+
+   
+</div>
+
+
+  
+ 
+<script>
+
+let map;
+let originadd = document.getElementById("originadd");
+let destinatiosadd = document.getElementById("destinatiosadd");
+let distance = document.getElementById("distance");
+let duration = document.getElementById("duration");
+
+
+function initMap() 
+{
+   
+    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                          
+            let uselat = position.coords.latitude;
+            let uselng = position.coords.longitude;
+
+                               
+                               // direction
+
+                               const directionsRenderer = new google.maps.DirectionsRenderer();
+                                const directionsService = new google.maps.DirectionsService();
+                                 map = new google.maps.Map(document.getElementById("map"), {
+                                    center: { lat: uselat, lng: uselng },
+                                    zoom: 15,
+                                });
+    
+                                directionsRenderer.setMap(map);
+                                calculateAndDisplayRoute(directionsService, directionsRenderer);
+                                      document.getElementById("mode").addEventListener(
+                                        "change",
+                                        () => {
+                                          calculateAndDisplayRoute(directionsService, directionsRenderer);
+                                        }
+                                      );
+
+                                      function calculateAndDisplayRoute(
+                                          directionsService,
+                                          directionsRenderer
+                                        ) {
+                                          const selectedMode = document.getElementById("mode")
+                                            .value;
+
+                                          directionsService
+                                            .route({
+                                              origin: { lat: uselat, lng: uselng }, // Haight.
+                                              destination: { lat: @Model.Company.LatCoord, lng: @Model.Company.LngCoord }, 
+
+                                              travelMode: google.maps.TravelMode[selectedMode],
+                                            })
+                                            .then((response) => {
+                                              directionsRenderer.setDirections(response);
+
+                                              //melumat
+                                                history(response)
+                                              //
+                                              console.log(response.routes[0])
+                                            })
+                                            .catch((e) => window.alert("Directions request failed due to " + status));
+                                        }
+
+                               //
+                            
+                        });
+    
+
+
+
+
+}
+
+
+
+
+
+window.initMap = initMap;
+
+function history(response) {
+       originadd.innerHTML = response.routes[0].legs[0].start_address;
+       destinatiosadd.innerHTML = response.routes[0].legs[0].end_address;
+
+       distance.innerHTML = response.routes[0].legs[0].distance.text;
+       duration.innerHTML = response.routes[0].legs[0].duration.text;
+
+}
+         
+                
+               
+    </script>
+        
+<script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFpqjXIt_kVyWqK3_9mrCXD5_hASViWus&callback=initMap&v=weekly"
+      defer
+    ></script>

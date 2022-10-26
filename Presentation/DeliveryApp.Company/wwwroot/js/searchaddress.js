@@ -28,14 +28,14 @@ addressSearch.onkeyup = function () {
 
                 $("#listArea a").slice(0).remove();
                 listGroup.innerHTML = `
-                                     <button type="button" data-dismiss="modal" class="list-group-item mb-2 localization list-group-item-action active">
+                                     <button id="setaddressbtn" type="button" data-dismiss="modal" class="list-group-item mb-2 localization list-group-item-action active">
 												<i class="icon-copy fa fa-location-arrow mx-2" aria-hidden="true"></i>
 												${formattedAddress}</a>
 
             `
 
 
-                setaddressbtn.addEventListener("click", function () {
+                listGroup.firstElementChild.addEventListener("click", function () {
                   
 
                     var body = {
@@ -44,7 +44,7 @@ addressSearch.onkeyup = function () {
                         lngCoord: lng
                     }
 
-                    console.log(formData)
+                   
 
                     axios({
                         method: 'post',

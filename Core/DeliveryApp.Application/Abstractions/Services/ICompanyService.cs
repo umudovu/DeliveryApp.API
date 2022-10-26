@@ -2,11 +2,6 @@
 using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeliveryApp.Application.Abstractions.Services
 {
@@ -14,11 +9,12 @@ namespace DeliveryApp.Application.Abstractions.Services
 	{
 		Task<CreateUserResponse> CreateAsync(RegisterCompanyVM model);
 		Task<bool> UpdateAsync(UpdateCompanyDto companyDto);
+		Task<bool> SetAddress(AddressVM address,int id);
 		Task<bool> UpdatePhotoAsync(IFormFile Photo,string userId);
 
 		Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate);
-		Company GetCompany(string userId);
-		IQueryable<Company> GetAllCompany();
-		Task<Company> GetCompanyByIdAsync(int id);
+		DeliveryApp.Domain.Entities.Company GetCompany(string userId);
+		IQueryable<DeliveryApp.Domain.Entities.Company> GetAllCompany();
+		Task<DeliveryApp.Domain.Entities.Company> GetCompanyByIdAsync(int id);
 	}
 }

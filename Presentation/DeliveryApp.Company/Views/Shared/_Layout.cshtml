@@ -28,6 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="~/src/styles/icon-font.min.css">
 	<link rel="stylesheet" type="text/css" href="~/src/datatables/css/dataTables.bootstrap4.min.css">
 	<link rel="stylesheet" type="text/css" href="~/src/datatables/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="~/src/styles/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -136,7 +137,7 @@
 	<!-- left side bar -->
 	<div class="left-side-bar">
 		<div class="brand-logo">
-			<a href="index.html">
+			<a asp-controller="dashboard">
 				<img src="~/src/images/deskapp-logo.svg" alt="" class="dark-logo">
 				<img src="~/src/images/deskapp-logo-white.svg" alt="" class="light-logo">
 			</a>
@@ -147,23 +148,58 @@
 		<div class="menu-block customscroll">
 			<div class="sidebar-menu">
 				<ul id="accordion-menu">
-					<li class="dropdown">
-						<a href="javascript:;" class="dropdown-toggle">
-							<span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
+
+					<li>
+						<a asp-controller="dashboard" asp-action="index" class="dropdown-toggle no-arrow">
+							<span class="micon icon-copy ti-target"></span><span class="mtext">Home</span>
 						</a>
-						<ul class="submenu">
-							<li><a asp-controller="dashboard">Home</a></li>
-						</ul>
 					</li>
-					<li class="dropdown">
-						<a href="javascript:;" class="dropdown-toggle">
-							<span class="micon dw dw-list3"></span><span class="mtext">Category</span>
+					
+					<li>
+						<a asp-controller="category" asp-action="index" class="dropdown-toggle no-arrow">
+							<span class="micon icon-copy ti-target"></span><span class="mtext">Category</span>
 						</a>
-						<ul class="submenu">
-							<li><a asp-controller="category" asp-action="index">Categories</a></li>
-						</ul>
 					</li>
-					<li class="dropdown">
+
+					<li>
+						<a asp-controller="product" asp-action="index" asp-route-act="@ProductAction.IsActive" class="dropdown-toggle no-arrow">
+							<span class="micon icon-copy ti-target"></span><span class="mtext">Aktive Products</span>
+						</a>
+					</li>
+					<li>
+						<div class="dropdown-divider"></div>
+					</li>
+
+					<li>
+						<a asp-controller="order" asp-action="index" class="dropdown-toggle no-arrow">
+							<span class="icon-copy ti-info-alt"></span></span><span class="mtext mx-3">All Orders</span>
+						</a>
+					</li>
+
+					<li>
+						<a asp-controller="order" asp-action="orderbystatus" asp-route-status="@DeliveryApp.Domain.Entities.OrderStatus.Processing" class="dropdown-toggle no-arrow">
+							<span class="icon-copy ti-settings"></span><span class="mtext mx-3">Orders in process</span>
+						</a>
+					</li>
+					<li>
+						<a asp-controller="order" asp-action="orderbystatus" asp-route-status="@DeliveryApp.Domain.Entities.OrderStatus.Shipped" class="dropdown-toggle no-arrow">
+							<span class="icon-copy ti-rocket "></span> <span class="mtext mx-3">Orders by shipped</span>
+						</a>
+					</li>
+					<li>
+						<a asp-controller="order" asp-action="orderbystatus" asp-route-status="@DeliveryApp.Domain.Entities.OrderStatus.Completed" class="dropdown-toggle no-arrow">
+							<span class="icon-copy ti-check-box"></span> <span class="mtext mx-3">Completed orders</span>
+						</a>
+					</li>
+					
+					<li>
+						<a asp-controller="order" asp-action="orderbystatus" asp-route-status="@DeliveryApp.Domain.Entities.OrderStatus.Canceled" class="dropdown-toggle no-arrow">
+							<span class="icon-copy ti-share-alt"></span> <span class="mtext mx-3">Canceled orders</span>
+						</a>
+					</li>
+					
+					
+					@*<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
 							<span class="micon dw dw-list3"></span><span class="mtext">Products</span>
 						</a>
@@ -171,10 +207,13 @@
 							<li><a asp-controller="product" asp-action="index" asp-route-act="@ProductAction.IsActive">Aktive Products</a></li>
 							<li><a asp-controller="product" asp-action="index"asp-route-act="@ProductAction.IsPassive">Removed</a></li>
 						</ul>
-					</li>
+					</li>*@
+
 					<li>
 						<div class="dropdown-divider"></div>
 					</li>
+
+					
 				</ul>
 			</div>
 		</div>
@@ -232,8 +271,10 @@
 		</div>
 	</div>
         <!-- js -->
+
 	<script src="~/src/scripts/core.js"></script>
-	<script src="~/src/scripts/script.min.js"></script>
+	<script src="~/src/plugins/bootstrap/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="~/src/scripts/process.js"></script>
 	<script src="~/src/scripts/layout-settings.js"></script>
 	@await RenderSectionAsync("Scripts", required: false)

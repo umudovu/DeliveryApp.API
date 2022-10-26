@@ -9,20 +9,30 @@ namespace DeliveryApp.Domain.Entities
 {
     public class Order : BaseEntity
     {
-        public string FirstName { get; set; }
-        public string SurName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string InvoiceNo { get; set; }
-        public string TrackingNo { get; set; }
-        public string LatCoord { get; set; }
-        public string LngCoord { get; set; }
-        public string Email { get; set; }
+        public string? FirstName { get; set; }
+        public string? SurName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? InvoiceNo { get; set; }
+        public string? TrackingNo { get; set; }
+        public string? Address { get; set; }
+        public string? LatCoord { get; set; }
+        public string? LngCoord { get; set; }
+        public string? Email { get; set; }
         public double TotalPrice { get; set; }
         public OrderStatus OrderStatus { get; set; }
+        public Nullable<ShippedStatus> ShippedStatus { get; set; }
 
-        public string UserId { get; set; }
-        public AppUser User { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+
+        public int CustomerId { get; set; }
+        public Customer? Customer { get; set; }
+
+        public int CompanyId { get; set; }
+        public Company? Company { get; set; }
+
+        public Courier? Courier { get; set; }
+        public Nullable<int> CourierId { get; set; }
+
+        public List<OrderItem>? OrderItems { get; set; }
     }
     public enum OrderStatus
     {
@@ -30,7 +40,12 @@ namespace DeliveryApp.Domain.Entities
         Processing,
         Shipped,
         Completed,
-        Closed,
         Canceled,
+    }
+    public enum ShippedStatus
+    {
+        Curyer_appointed,
+        The_order_is_in_the_courier,
+        The_order_has_been_delivered
     }
 }

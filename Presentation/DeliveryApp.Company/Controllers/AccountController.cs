@@ -1,9 +1,9 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Application.ViewModels;
-using DeliveryApp.Company.ViewModels;
 using DeliveryApp.Domain.Entities;
 using DeliveryApp.Infrastructure.Enums;
+using DeliveryApp.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,15 +16,14 @@ namespace DeliveryApp.Company.Controllers
         private readonly ICompanyService _companyService;
         private readonly IAuthService _authService;
         readonly UserManager<AppUser> _userManager;
-        readonly SignInManager<AppUser> _signInManager;
         readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _context;
         public AccountController(ICompanyService userService, IAuthService authService, 
-            UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
+            UserManager<AppUser> userManager,  RoleManager<IdentityRole> roleManager)
         {
             _companyService = userService;
             _authService = authService;
             _userManager = userManager;
-            _signInManager = signInManager;
             _roleManager = roleManager;
         }
 
@@ -68,7 +67,21 @@ namespace DeliveryApp.Company.Controllers
         [HttpPost]
         public async Task<IActionResult>SetAddress([FromBody]AddressVM address)
         {
-            return Ok(address);
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+            var company = _companyService.GetCompany(user.Id);
+
+            try
+            {
+                await _companyService.SetAddress(address, company.Id);
+                return Ok();
+               
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("index", "dashboard");
+            }
+            
+
         }
 
 

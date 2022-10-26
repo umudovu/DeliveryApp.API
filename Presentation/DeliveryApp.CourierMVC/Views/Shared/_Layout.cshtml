@@ -6,7 +6,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Food Ride Courier</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="~/vendors/feather/feather.css">
   <link rel="stylesheet" href="~/vendors/ti-icons/css/themify-icons.css">
@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="~/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="~/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" type="text/css" href="~/js/select.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="~/css/vertical-layout-light/style.css">
@@ -26,11 +27,11 @@
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" asp-controller="home" asp-action="index">Food Ride</a>
-        <a class="navbar-brand brand-logo-mini" asp-controller="home" asp-action="index"></a>
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center col-3">
+        <a class="navbar-brand brand-logo mr-5" style="font-weight:bold" asp-controller="home" asp-action="index">Food Ride</a>
+        <a class="navbar-brand brand-logo-mini ml-2" style="font-weight:bold" asp-controller="home" asp-action="index">Food Ride</a>
       </div>
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end col-9">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
@@ -97,14 +98,14 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img src="~/images/faces/face28.jpg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
                 <i class="ti-settings text-primary"></i>
                 Settings
               </a>
-              <a class="dropdown-item">
+              <a asp-controller="account" asp-action="logout" class="dropdown-item">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -130,16 +131,25 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
+          
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="home" asp-action="index">
+                  <i class="icon-grid menu-icon"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+              </li>
+
           <li class="nav-item">
-            <a class="nav-link" asp-controller="home">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" asp-controller="order">
+            <a class="nav-link" asp-controller="order" asp-action="index">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Orders</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" asp-controller="order" asp-action="active">
+              <i class="icon-contract menu-icon"></i>
+              <span class="menu-title">Active order</span>
             </a>
           </li>
         </ul>
@@ -152,7 +162,7 @@
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
+        <footer class="footer mt-5">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
@@ -188,7 +198,7 @@
   <script src="~/js/todolist.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="~/js/dashboard.js"></script>
+  @*<script src="~/js/dashboard.js"></script>*@
   <script src="~/js/Chart.roundedBarCharts.js"></script>
 
   @await RenderSectionAsync("Scripts", required: false)

@@ -12,5 +12,14 @@ namespace DeliveryApp.Application.Abstractions.Services
     {
         bool CreateOrder(Order order, List<OrderItem> orderItems);
         bool Pay();
+        Task<bool> AddCourierAsync(int? id,int courierId);
+
+        Task<IQueryable<Order>> GetAllAsync();
+        Task<Order> GetOrderByIdAsync(int? id);
+        Task<bool> ChangeStatus(int id,OrderStatus status);
+        Task<bool> CompleteOrder(int orderId,int courierId);
+
+
+
     }
 }

@@ -47,6 +47,7 @@ namespace DeliveryApp.Persistence
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ICourierService, CourierService>();
         }
     }
 }

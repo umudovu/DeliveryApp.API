@@ -5,10 +5,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Gurde ep Osahan">
-<meta name="author" content="Gurdeep Osahan">
+<meta name="description" content="Food Ride">
+<meta name="author" content="Food Ride">
 <link rel="icon" type="image/png" href="~/img/logo_web_red.png">
-<title>Foodride - Online Food Ordering Website Template</title>
+<title>Foodride </title>
 
 <link rel="stylesheet" type="text/css" href="~/vendor/slick/slick.min.css" />
 <link rel="stylesheet" type="text/css" href="~/vendor/slick/slick-theme.min.css" />
@@ -20,6 +20,7 @@
 <link href="~/css/style.css" rel="stylesheet">
 
 <link href="~/vendor/sidebar/demo.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <script type="11efad072887e2e154cdf8b5-text/javascript" src="~/vendor/jquery/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -123,65 +124,7 @@ Profile
 
 </section>
 
-<section class="footer-center border-top padding-y py-5">
-<h6 class="title text-white">Countries</h6>
-<div class="row">
-<aside class="col-sm-2 col-md-2 text-white">
-<ul class="list-unstyled hov_footer">
-<li> <a href="#" class="text-muted">India</a></li>
-<li> <a href="#" class="text-muted">Indonesia</a></li>
-<li> <a href="#" class="text-muted">Ireland</a></li>
-<li> <a href="#" class="text-muted">Italy</a></li>
-<li> <a href="#" class="text-muted">Lebanon</a></li>
-</ul>
-</aside>
-<aside class="col-sm-2 col-md-2 text-white">
-<ul class="list-unstyled hov_footer">
-<li> <a href="#" class="text-muted">Malaysia</a></li>
-<li> <a href="#" class="text-muted">New Zealand</a></li>
-<li> <a href="#" class="text-muted">Philippines</a></li>
-<li> <a href="#" class="text-muted">Poland</a></li>
-<li> <a href="#" class="text-muted">Portugal</a></li>
-</ul>
-</aside>
-<aside class="col-sm-2 col-md-2 text-white">
-<ul class="list-unstyled hov_footer">
-<li> <a href="#" class="text-muted">Australia</a></li>
-<li> <a href="#" class="text-muted">Brasil</a></li>
-<li> <a href="#" class="text-muted">Canada</a></li>
-<li> <a href="#" class="text-muted">Chile</a></li>
-<li> <a href="#" class="text-muted">Czech Republic</a></li>
-</ul>
-</aside>
-<aside class="col-sm-2 col-md-2 text-white">
-<ul class="list-unstyled hov_footer">
-<li> <a href="#" class="text-muted">Turkey</a></li>
-<li> <a href="#" class="text-muted">UAE</a></li>
-<li> <a href="#" class="text-muted">United Kingdom</a></li>
-<li> <a href="#" class="text-muted">United States</a></li>
-<li> <a href="#" class="text-muted">Sri Lanka</a></li>
-</ul>
-</aside>
-<aside class="col-sm-2 col-md-2 text-white">
-<ul class="list-unstyled hov_footer">
-<li> <a href="#" class="text-muted">Qatar</a></li>
-<li> <a href="#" class="text-muted">Singapore</a></li>
-<li> <a href="#" class="text-muted">Slovakia</a></li>
-<li> <a href="#" class="text-muted">South Africa</a></li>
-<li> <a href="#" class="text-muted">Green Land</a></li>
-</ul>
-</aside>
-<aside class="col-sm-2 col-md-2 text-white">
-<ul class="list-unstyled hov_footer">
-<li> <a href="#" class="text-muted">Pakistan</a></li>
-<li> <a href="#" class="text-muted">Bangladesh</a></li>
-<li> <a href="#" class="text-muted">Bhutaan</a></li>
-<li> <a href="#" class="text-muted">Nepal</a></li>
-</ul>
-</aside>
-</div>
 
-</section>
 </div>
 
 <section class="footer-copyright border-top py-3 bg-light">
@@ -196,13 +139,13 @@ Profile
 </footer>
 <nav id="main-nav">
 <ul class="second-nav">
-<li><a href="home.html"><i class="feather-home mr-2"></i> Homepage</a></li>
-<li><a href="my_order.html"><i class="feather-list mr-2"></i> My Orders</a></li>
+<li><a asp-controller="home" asp-action="index"><i class="feather-home mr-2"></i> Homepage</a></li>
+<li><a asp-controller="order" asp-action="myorder"><i class="feather-list mr-2"></i> My Orders</a></li>
 <li>
 <a href="#"><i class="feather-edit-2 mr-2"></i> Authentication</a>
 <ul>
-<li><a href="login.html">Login</a></li>
-<li><a href="signup.html">Register</a></li>
+<li><a asp-controller="auth" asp-action="login">Login</a></li>
+<li><a asp-controller="auth" asp-action="register">Register</a></li>
 <li><a href="forgot_password.html">Forgot Password</a></li>
 <li><a href="verification.html">Verification</a></li>
 <li><a href="location.html">Location</a></li>

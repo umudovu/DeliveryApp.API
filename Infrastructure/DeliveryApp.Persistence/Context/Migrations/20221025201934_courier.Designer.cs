@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeliveryApp.Persistence.Context.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221018171710_order")]
-    partial class order
+    [Migration("20221025201934_courier")]
+    partial class courier
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,6 +138,9 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Adress")
                         .HasColumnType("nvarchar(max)");
 
@@ -160,6 +163,12 @@ namespace DeliveryApp.Persistence.Context.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LatCoord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LngCoord")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -188,6 +197,40 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Courier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("RemovedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Courier");
                 });
 
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Customer", b =>
@@ -231,52 +274,64 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourierId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InvoiceNo")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LatCoord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LngCoord")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SurName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
                     b.Property<string>("TrackingNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CourierId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -527,6 +582,17 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Courier", b =>
+                {
+                    b.HasOne("DeliveryApp.Domain.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Customer", b =>
                 {
                     b.HasOne("DeliveryApp.Domain.Entities.AppUser", "AppUser")
@@ -538,13 +604,29 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("DeliveryApp.Domain.Entities.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("DeliveryApp.Domain.Entities.Company", "Company")
+                        .WithMany("Orders")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("DeliveryApp.Domain.Entities.Courier", "Courier")
+                        .WithMany("Orders")
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DeliveryApp.Domain.Entities.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Courier");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("DeliveryApp.Domain.Entities.OrderItem", b =>
@@ -647,7 +729,19 @@ namespace DeliveryApp.Persistence.Context.Migrations
                 {
                     b.Navigation("Categories");
 
+                    b.Navigation("Orders");
+
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Courier", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Order", b =>

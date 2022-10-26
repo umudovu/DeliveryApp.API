@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace DeliveryApp.Persistence.Repositories
 {
 
-	public class CompanyRepository : Repository<Company>, ICompanyRepository
+	public class CompanyRepository : Repository<DeliveryApp.Domain.Entities.Company>, ICompanyRepository
     {
         public CompanyRepository(AppDbContext context) : base(context)
         {

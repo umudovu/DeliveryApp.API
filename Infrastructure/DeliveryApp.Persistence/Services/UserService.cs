@@ -1,6 +1,7 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Application.DTOs.User;
 using DeliveryApp.Domain.Entities;
+using DeliveryApp.Infrastructure.Enums;
 using DeliveryApp.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
 
@@ -36,7 +37,8 @@ namespace DeliveryApp.Persistence.Services
 				AppUserId = user.Id
 			};
 
-			
+
+			await _userManager.AddToRoleAsync(user, AppRole.Member.ToString());
 
 			CreateUserResponse response = new() { Succeeded = result.Succeeded };
 

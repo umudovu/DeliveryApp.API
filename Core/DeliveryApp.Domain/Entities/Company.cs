@@ -32,5 +32,7 @@ namespace DeliveryApp.Domain.Entities
 
 		public ICollection<Product>? Products { get; set; }
 		public ICollection<Category>? Categories { get; set; }
+		public ICollection<Order>? Orders { get; set; }
+
 	}
 }

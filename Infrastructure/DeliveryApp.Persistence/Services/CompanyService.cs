@@ -145,5 +145,14 @@ namespace DeliveryApp.Persistence.Services
 
 			return company;
         }
-	}
+
+        public async Task<bool> SetAddress(AddressVM address, int id)
+        {
+			var company =await GetCompanyByIdAsync(id);
+			company.Address = address.Address;
+			company.LatCoord = address.LatCoord;
+			company.LngCoord = address.LngCoord;
+			return await _companyRepository.SaveAsync();
+        }
+    }
 }

@@ -1,0 +1,135 @@
+﻿@model List<Order>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div class="card-box mb-30 ">
+					<div class="pd-20 container">
+						</div>
+					<div class="pb-20">
+						<table class="data-table table stripe hover nowrap container-fluid">
+							<thead>
+								<tr>
+									<th class="table-plus  datatable-nosort">Ordered</th>
+									<th>Phone number</th>
+									<th>Address</th>
+									<th>TrackingNo</th>
+									<th>Order time</th>
+									<th>Order status</th>
+									<th>Total amount</th>
+									<th class="datatable-nosort">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									
+									<tr data-id="@item.Id">
+										
+											<td>@item.FirstName</td>
+											<td>@item.PhoneNumber</td>
+											<td>@item.Address</td>
+											<td>@item.TrackingNo</td>
+											<td>@item.CreatedDate</td>
+											<td>@item.OrderStatus
+												<div class="dropdown">
+													<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+														<i class="dw dw-more"></i>
+													</a>
+													<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+														@foreach (var s in Enum.GetValues<OrderStatus>())
+														{
+															<span class="dropdown-item statusOrder"  data-id="@item.Id" data-status="@s"><i class="icon-copy fa fa-eercast" aria-hidden="true"></i> @s</span>
+														}
+													</div>
+												</div>
+											</td>
+											<td>@item.TotalPrice AZN</td>
+											<td>
+												<div class="dropdown">
+													<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+														<i class="dw dw-more"></i>
+													</a>
+													<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+														<a class="dropdown-item" asp-action="update" asp-route-id="@item.Id" asp-route-ReturnUrl="@Context.Request.Path"><i class="dw dw-edit2"></i> Edit</a>
+														<a class="dropdown-item" asp-action="remove" asp-route-id="@item.Id" asp-route-ReturnUrl="@Context.Request.Path"><i class="dw dw-delete-3"></i> Delete</a>
+													</div>
+												</div>
+											</td>
+										
+											</tr>
+										
+								}
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+<style>
+	td:hover{
+		cursor:pointer;
+	}
+</style>
+
+@section Scripts{
+	<script src="~/src/datatables/js/jquery.dataTables.min.js"></script>
+	<script src="~/src/datatables/js/dataTables.bootstrap4.min.js"></script>
+	<script src="~/src/datatables/js/dataTables.responsive.min.js"></script>
+	<script src="~/src/datatables/js/responsive.bootstrap4.min.js"></script>
+	<script src="~/src/datatables/js/responsive.bootstrap4.min.js"></script>
+	
+	<script src="~/src/scripts/datatable-setting.js"></script>
+
+<script>
+
+$("tr").each(function() {
+    $(this).dblclick(function(e) {
+        e.preventDefault();
+        let id = $(this).attr("data-id");
+
+
+		axios.get('/order/detail?id='+id)
+  .then(function (response) {
+    // handle success
+    console.log(response);
+	$("body").html(response.data)
+
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+	})
+})
+
+// status 
+
+
+$(".statusOrder").each(function() {
+    $(this).click(function() {
+		let id  = $(this).attr("data-id");
+		let status  = $(this).attr("data-status");
+
+			axios.get(`order/status/${id}?status=${status}`)
+  .then(function (response) {
+    // handle success
+    console.log(response);
+	$("body").html(response.data)
+
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+	})
+})
+
+</script>
+	
+}
