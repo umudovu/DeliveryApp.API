@@ -15,5 +15,6 @@ namespace DeliveryApp.Application.Abstractions.Services
         Task<bool> DeleteAsync(int id);
         Task<Product>GetSingleAsync(int id);
         IQueryable<Product> GetAll(string userId);
+        Task<IQueryable<Product>> GetBestSellerAsync(string userId);
     }
 }

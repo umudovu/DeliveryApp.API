@@ -11,7 +11,6 @@ namespace DeliveryApp.Domain.Entities
 	{
 		public string? Name { get; set; }
 		public string? Description { get; set; }
-		public string? Adress { get; set; }
 		public string? PhoneNumber { get; set; }
 		public string? StartJob { get; set; }
 		public string? EndJob { get; set; }
@@ -33,6 +32,7 @@ namespace DeliveryApp.Domain.Entities
 		public ICollection<Product>? Products { get; set; }
 		public ICollection<Category>? Categories { get; set; }
 		public ICollection<Order>? Orders { get; set; }
+		public ICollection<Comment>? Comments { get; set; }
 
 	}
 }

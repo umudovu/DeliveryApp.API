@@ -1,8 +1,8 @@
 ﻿@model OrderReturnVM
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@{
+    string hrefwaze = "https://www.waze.com/en/live-map/directions?latlng="+Model.DestLat+"%2C" +Model.DestLng+ "&navigate=yes";
+}
 
 <style>
     #floating-panel {
@@ -32,6 +32,22 @@
 #maparea{
     position:relative;
 }
+#wazeget{
+    position: absolute;
+  top: 20%;
+  right: 3%;
+  z-index: 5;
+  padding:10px;
+  border-radius:40px;
+  background-color:rgb(51,204,255);
+  text-decoration:none;
+  color:black;
+}
+
+#wazeget:hover{
+    cursor:pointer;
+}
+
 </style>
 
 <div class="content-wrapper pb-0 mb-4">
@@ -74,6 +90,12 @@
       </select>
     </div>
     <div id="map"></div>
+
+    <a target="_blank" href="@hrefwaze" id="wazeget">
+        <i style="font-size:2rem;" class="fa-brands fa-waze"></i>
+
+        
+    </a>
 </div>
 
 <div class="container my-5">
@@ -138,6 +160,10 @@ let destinatiosadd = document.getElementById("destinatiosadd");
 let distance = document.getElementById("distance");
 let duration = document.getElementById("duration");
 
+let wazeget = document.getElementById("wazeget");
+
+
+     
 
 function initMap() 
 {
@@ -216,12 +242,18 @@ function history(response) {
        duration.innerHTML = response.routes[0].legs[0].duration.text;
 
 }
-         
-                
-               
+        
     </script>
         
 <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFpqjXIt_kVyWqK3_9mrCXD5_hASViWus&callback=initMap&v=weekly"
       defer
     ></script>
+
+<script>
+//    wazeget.addEventListener("click", function(e) {
+//        e.preventDefault();
+
+//        alert("waze")
+//});
+</script>

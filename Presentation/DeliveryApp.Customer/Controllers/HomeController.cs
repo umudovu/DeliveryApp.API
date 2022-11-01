@@ -1,7 +1,9 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
 using DeliveryApp.Customer.Models;
 using DeliveryApp.Domain.Entities;
+using DeliveryApp.Persistence.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryApp.Customer.Controllers
 {
@@ -9,6 +11,7 @@ namespace DeliveryApp.Customer.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly ICompanyService _companyService;
+        private readonly AppDbContext _context;
 
         public HomeController(ICategoryService categoryService, ICompanyService companyService)
         {
@@ -36,6 +39,19 @@ namespace DeliveryApp.Customer.Controllers
 
                 return BadRequest(ex.Message);
             }
+        }
+
+
+        public IActionResult SerachProduct(string search)
+        {
+            List<Product> products = _context.Products
+                 .Include(p => p.Category)
+                 .OrderBy(p => p.Id)
+                 .Where(p => p.Name.ToLower()
+                 .Contains(search.ToLower()))
+                 .Take(5).ToList();
+
+            return PartialView("_SearchPartial", products);
         }
     }
 }

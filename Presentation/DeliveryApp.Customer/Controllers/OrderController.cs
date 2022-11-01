@@ -1,20 +1,17 @@
 ﻿using DeliveryApp.Application.Abstractions.Services;
-using DeliveryApp.Application.DTOs;
-using DeliveryApp.Application.ViewModels;
 using DeliveryApp.Customer.Extentions;
 using DeliveryApp.Customer.Models;
 using DeliveryApp.Domain.Entities;
 using DeliveryApp.Persistence.Context;
-using DeliveryApp.Persistence.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace DeliveryApp.Customer.Controllers
 {
-   
+
     public class OrderController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -22,15 +19,17 @@ namespace DeliveryApp.Customer.Controllers
         private readonly ICustomerService _customerService;
         private readonly AppDbContext _context;
         private readonly IOrderService _orderService;
+        private readonly ISmsService _smsService;
         public OrderController(UserManager<AppUser> userManager, ICompanyService companyService,
-                            ICustomerService customerService, AppDbContext context, IOrderService orderService)
+                            ICustomerService customerService, AppDbContext context, IOrderService orderService, ISmsService smsService)
         {
             _userManager = userManager;
             _companyService = companyService;
             _customerService = customerService;
             _context = context;
             _orderService = orderService;
-        }   
+            _smsService = smsService;
+        }
 
         public IActionResult Index()
         {
@@ -61,7 +60,7 @@ namespace DeliveryApp.Customer.Controllers
             return View(order);
         }
 
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("login", "error");
 
@@ -70,6 +69,7 @@ namespace DeliveryApp.Customer.Controllers
             List<BasketVM> basket = JsonConvert.DeserializeObject<List<BasketVM>>(isBasket);
 
             if (basket.Count == 0) return RedirectToAction("empty", "error");
+
 
             return View();
         }
@@ -100,7 +100,6 @@ namespace DeliveryApp.Customer.Controllers
                     dbCompanies = dbCompanies.Where(x => x.Id == company.Id);
                 }
 
-
             }
             foreach (var c in companies)
             {
@@ -120,6 +119,7 @@ namespace DeliveryApp.Customer.Controllers
                     CustomerId = customer.Id,
                     CompanyId=c.Id
                 };
+                customer.Address = address;
                 orders.Add(order);
             }
 
@@ -136,7 +136,7 @@ namespace DeliveryApp.Customer.Controllers
             {
                 foreach (BasketVM pr in basket)
                 {
-                    var dbProduct = await _context.Products.FindAsync(pr.Id);
+                    var dbProduct = await _context.Products.Include(x=>x.Company).FirstOrDefaultAsync(x=>x.Id== pr.Id);
                     if (dbProduct.CompanyId==o.CompanyId)
                     {
                         OrderItem orderItem = new()
@@ -146,9 +146,8 @@ namespace DeliveryApp.Customer.Controllers
                             Price = dbProduct.Price,
                             Total = pr.BasketCount * dbProduct.Price,
                             OrderId = o.Id,
-
-
                         };
+                        dbProduct.SellerCount += pr.BasketCount;
                         o.TotalPrice += pr.Price * pr.BasketCount;
                         orderItems.Add(orderItem);
                     }
@@ -173,27 +172,37 @@ namespace DeliveryApp.Customer.Controllers
         
         public async Task<IActionResult> Cash(bool isOrder,List<int> orderIds)
         {
+            string phoneNumber="";
+
+
             if (isOrder == false) return RedirectToAction("invalid", "error");
 
             List<Order> orders = new();
             foreach (var oi in orderIds)
             {
-                var order = await _context.Orders.FindAsync(oi);
+                var order = await _context.Orders.Include(x => x.Company).FirstOrDefaultAsync(x => x.Id == oi);
+                order.Company.Balance += order.TotalPrice;
+
+                phoneNumber = order.PhoneNumber;
                 orders.Add(order);
             }
 
             foreach (var o in orders)
             {
                 o.OrderStatus = OrderStatus.Processing;
+               
             }
-            
+
+            await _smsService.Send(phoneNumber, "Your order has been successfully received");
+
             _context.SaveChanges();
 
             Response.Cookies.Delete("basket");
 
+            
+
             return RedirectToAction("successful", "info");
         }
-
 
 
         [Authorize]

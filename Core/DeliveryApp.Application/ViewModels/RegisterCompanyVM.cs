@@ -15,17 +15,12 @@ namespace DeliveryApp.Application.ViewModels
         [Required]
         public string? Name { get; set; }
         [Required]
-        public string? Description { get; set; }
-        [Required]
-        public string? Adress { get; set; }
-        [Required]
         public string? PhoneNumber { get; set; }
         [Required]
         public string? StartJob { get; set; }
         [Required]
         public string? EndJob { get; set; }
-        public IFormFile? Photo { get; set; }
-        [Required, DataType(DataType.Password)]
+
         public string? Password { get; set; }
         [Required, DataType(DataType.Password), Compare(nameof(Password))]
         public string? PasswordConfirm { get; set; }

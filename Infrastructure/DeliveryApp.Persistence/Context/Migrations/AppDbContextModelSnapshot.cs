@@ -113,10 +113,10 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -128,6 +128,41 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RemovedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -137,9 +172,6 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Adress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AppUserId")
@@ -175,7 +207,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("ServiceFee")
@@ -187,7 +219,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<string>("StartJob")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -233,7 +265,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SurName")
@@ -245,7 +277,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<double>("TotalProfit")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -332,7 +364,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ShippedStatus")
@@ -347,7 +379,7 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<string>("TrackingNo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -430,13 +462,16 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("SellerCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("StockCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -598,6 +633,25 @@ namespace DeliveryApp.Persistence.Context.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("DeliveryApp.Domain.Entities.Comment", b =>
+                {
+                    b.HasOne("DeliveryApp.Domain.Entities.Company", "Company")
+                        .WithMany("Comments")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DeliveryApp.Domain.Entities.Customer", "Customer")
+                        .WithMany("Comments")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Company", b =>
                 {
                     b.HasOne("DeliveryApp.Domain.Entities.AppUser", "User")
@@ -752,6 +806,8 @@ namespace DeliveryApp.Persistence.Context.Migrations
                 {
                     b.Navigation("Categories");
 
+                    b.Navigation("Comments");
+
                     b.Navigation("Orders");
 
                     b.Navigation("Products");
@@ -764,6 +820,8 @@ namespace DeliveryApp.Persistence.Context.Migrations
 
             modelBuilder.Entity("DeliveryApp.Domain.Entities.Customer", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Orders");
                 });
 

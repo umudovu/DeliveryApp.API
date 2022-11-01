@@ -15,6 +15,6 @@ namespace DeliveryApp.Application.Abstractions.Services
 		Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate);
 		DeliveryApp.Domain.Entities.Company GetCompany(string userId);
 		IQueryable<DeliveryApp.Domain.Entities.Company> GetAllCompany();
-		Task<DeliveryApp.Domain.Entities.Company> GetCompanyByIdAsync(int id);
+		Task<DeliveryApp.Domain.Entities.Company> GetCompanyByIdAsync(int? id);
 	}
 }

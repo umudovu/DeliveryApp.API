@@ -15,6 +15,8 @@ namespace DeliveryApp.Domain.Entities
         public int StockCount { get; set; }
         public double Price { get; set; }
 
+        public Nullable<int> SellerCount { get; set; }
+
         public string? ImageUrl { get; set; }
         public string? ImagePublicId { get; set; }
         public bool IsDelete { get; set; }

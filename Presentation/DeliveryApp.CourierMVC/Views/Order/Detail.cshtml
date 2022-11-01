@@ -29,6 +29,8 @@
 #maparea{
     position:relative;
 }
+
+
 </style>
 
 <div class="content-wrapper pb-0 mb-4">
@@ -53,10 +55,12 @@
                          <span class="ml-2" id="duration"></span>
                     </p>
                 </div>
+                
               </div>
               <div class="row mt-4">
                   <a asp-action="confirm" asp-route-id="@Model.Id" class="btn btn-outline-primary">Accept order</a>
                   <a asp-action="index" class="btn btn-outline-dark ml-4">Back to orders</a>
+                   
               </div>
             </div>
           </div>
@@ -70,8 +74,10 @@
         <option value="TRANSIT">Transit</option>
       </select>
     </div>
+
     <div id="map"></div>
 
+    
    
 </div>
 

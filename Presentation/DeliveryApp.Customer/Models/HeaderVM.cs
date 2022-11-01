@@ -8,5 +8,6 @@ namespace DeliveryApp.Customer.Models
         public List<BasketVM> BasketVM { get; set; }
         public CustomerResponse Customer { get; set; }
         public SumVM SumVM { get; set; }
+        public DeliveryApp.Domain.Entities.Customer CustomerProfile { get; set; }
     }
 }

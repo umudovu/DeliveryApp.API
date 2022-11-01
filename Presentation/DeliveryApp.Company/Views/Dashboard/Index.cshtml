@@ -1,23 +1,21 @@
-﻿@model Company
+﻿@model CompanyDashboardVM
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 
-<div class="card-box pd-20 height-100-p mb-30">
-			
+<div class="card-box pd-20 height-100-p mb-30" style="font-weight:bold;">
+	Best seller		
 </div>
 			<div class="row">
-				<div class="col-xl-3 mb-30">
+				@*<div class="col-xl-3 mb-30">
 					<div class="card-box height-100-p widget-style1">
 						<div class="d-flex flex-wrap align-items-center">
-							<div class="progress-data">
-								<div id="chart"></div>
-							</div>
+							
 							<div class="widget-data">
-								<div class="h4 mb-0">2020</div>
-								<div class="weight-600 font-14">Contact</div>
+								<div class="h4 mb-0">@ViewBag.DailyOrder</div>
+								<div class="weight-600 font-14">sifaris sayi</div>
 							</div>
 						</div>
 					</div>
@@ -30,12 +28,12 @@
 							</div>
 							<div class="widget-data">
 								<div class="h4 mb-0">400</div>
-								<div class="weight-600 font-14">Deals</div>
+								<div class="weight-600 font-14">satilan product sayi</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-xl-3 mb-30">
+				</div>*@
+				@*<div class="col-xl-3 mb-30">
 					<div class="card-box height-100-p widget-style1">
 						<div class="d-flex flex-wrap align-items-center">
 							<div class="progress-data">
@@ -47,8 +45,8 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-xl-3 mb-30">
+				</div>*@
+				@*<div class="col-xl-3 mb-30">
 					<div class="card-box height-100-p widget-style1">
 						<div class="d-flex flex-wrap align-items-center">
 							<div class="progress-data">
@@ -56,14 +54,14 @@
 							</div>
 							<div class="widget-data">
 								<div class="h4 mb-0">$6060</div>
-								<div class="weight-600 font-14">Worth</div>
+								<div class="weight-600 font-14">gunluk qazanc</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>*@
 			</div>
 			<div class="row">
-				<div class="col-xl-8 mb-30">
+				@*<div class="col-xl-8 mb-30">
 					<div class="card-box height-100-p pd-20">
 						<h2 class="h4 mb-20">Activity</h2>
 						<div id="chart5"></div>
@@ -74,57 +72,56 @@
 						<h2 class="h4 mb-20">Lead Target</h2>
 						<div id="chart6"></div>
 					</div>
+				</div>*@
+			</div>
+			<div class="card-box mb-30 ">
+					<div class="pd-20 container">
+					
+						</div>
+					<div class="pb-20">
+						<table class="data-table table stripe hover nowrap container-fluid">
+							<thead>
+								<tr>
+									<th class="datatable-nosort">Image</th>
+									<th class="table-plus datatable-nosort">Name</th>
+									<th>Category Name</th>
+									<th>Price</th>
+									<th>Creat Date</th>
+									<th class="datatable-nosort">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Model.BestSeller)
+								{
+									<tr>
+											<td><img width="55"  src="@item.ImageUrl" style="background-size:cover;border-radius:10px"/></td>
+											<td>@item.Name</td>
+											<td>@item.Category.Name</td>
+											<td>@item.Price AZN</td>
+											<td>@item.CreatedDate.ToShortDateString()</td>
+											<td>
+												<div class="dropdown">
+													<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+														<i class="dw dw-more"></i>
+													</a>
+													<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+														<a class="dropdown-item" asp-action="update" asp-route-id="@item.Id" asp-route-ReturnUrl="@Context.Request.Path"><i class="dw dw-edit2"></i> Edit</a>
+														<a class="dropdown-item" asp-action="remove" asp-route-id="@item.Id" asp-route-ReturnUrl="@Context.Request.Path"><i class="dw dw-delete-3"></i> Delete</a>
+													</div>
+												</div>
+											</td>
+											</tr>
+								}
+								
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
-			<div class="card-box mb-30">
-				<h2 class="h4 pd-20">Best Selling Products</h2>
-				<table class="data-table table nowrap container">
-					<thead>
-						<tr>
-							<th class="table-plus datatable-nosort">Product</th>
-							<th>Name</th>
-							<th>Color</th>
-							<th>Size</th>
-							<th>Price</th>
-							<th>Oty</th>
-							<th class="datatable-nosort">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="table-plus">
-								<img src="https://www.budgetbytes.com/wp-content/uploads/2010/07/Classic-Homemade-Pizza-Dough-close.jpg" width="70" height="70" alt="">
-							</td>
-							<td>
-								<h5 class="font-16">Shirt</h5>
-								by John Doe
-							</td>
-							<td>Black</td>
-							<td>M</td>
-							<td>$1000</td>
-							<td>1</td>
-							<td>
-								<div class="dropdown">
-									<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-										<i class="dw dw-more"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-										<a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-										<a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-										<a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
 
 
-	@if(Model.Address==null){
+	@if(Model.Company.Address==null){
 
 		<div >
-		<a href="#warning-modal" data-backdrop="static"  data-toggle="modal" data-target="#warning-modal">aaaa</a>
 		<div data-backdrop="static"  class="modal show" id="warning-modal" tabindex="-1" role="dialog" 
 			aria-labelledby="myLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-md modal-dialog-centered">
@@ -145,13 +142,7 @@
 								</div>
 							</div>
 	</div>
-	<script>
-		$(window).load(function()
-{
-    $('#warning-modal').modal('show');
-});
-
-	</script>
+	
 	<script src="~/js/searchaddress.js"></script>
 	}
 
@@ -163,7 +154,16 @@
 	<script src="~/src/datatables/js/dataTables.responsive.min.js"></script>
 	<script src="~/src/datatables/js/responsive.bootstrap4.min.js"></script>
 	<script src="~/src/datatables/js/responsive.bootstrap4.min.js"></script>
-	<script src="~/src/scripts/dashboard.js"></script>
-	
+	@*<script src="~/src/scripts/dashboard.js"></script>*@
+	<script src="~/vendors/scripts/dashboard.js"></script>
+
+	<script>
+		$(document).ready(function()
+{
+    $('#warning-modal').modal('show');
+});
+
+	</script>
 
 		}
+

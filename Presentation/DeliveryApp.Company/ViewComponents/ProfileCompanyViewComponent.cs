@@ -27,7 +27,7 @@ namespace DeliveryApp.Company.ViewComponents
                 Id=user.Id,
                 Name=company.Name,
                 Description=company.Description,
-                Adress=company.Adress,
+                Address=company.Address,
                 PhoneNumber=company.PhoneNumber,
                 StartJob=company.StartJob,
                 EndJob=company.EndJob,

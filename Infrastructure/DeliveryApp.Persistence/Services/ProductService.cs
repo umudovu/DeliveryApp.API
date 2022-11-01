@@ -113,5 +113,13 @@ namespace DeliveryApp.Persistence.Services
 
             return await _productRepository.SaveAsync();
         }
+
+        public async Task<IQueryable<Product>> GetBestSellerAsync(string userId)
+        {
+            var products = GetAll(userId);
+            products = products.OrderByDescending(x => x.SellerCount).Take(10);
+
+            return products;
+        }
     }
 }

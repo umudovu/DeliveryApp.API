@@ -41,7 +41,6 @@ namespace DeliveryApp.Persistence.Services
 			bool companyResult = await _companyRepository.AddAsync(new()
 			{
 				Name = model.Name,
-				Adress = model.Adress,
 				PhoneNumber = model.PhoneNumber,
 				AppUserId = user.Id,
 				StartJob =model.StartJob,
@@ -80,7 +79,12 @@ namespace DeliveryApp.Persistence.Services
 		public Company GetCompany(string userId)
 		{
 			var query = _companyRepository.GetWhere(x => x.AppUserId == userId);
-			Company company = query.Include(x => x.Products).Include(c => c.Categories).First();
+			Company company = query
+							.Include(x => x.Orders)
+							.Include(x => x.Comments)
+							.ThenInclude(x => x.Customer)
+							.Include(x => x.Products)
+							.Include(c => c.Categories).First();
 
 			return company;
 		}
@@ -93,7 +97,6 @@ namespace DeliveryApp.Persistence.Services
 			company.Name = companyDto.Name;
 			company.EndJob = companyDto.EndJob;
 			company.StartJob= companyDto.StartJob;
-			company.Adress= companyDto.Adress;
 			company.PhoneNumber= companyDto.PhoneNumber;
 			company.Description= companyDto.Description;
 
@@ -128,18 +131,25 @@ namespace DeliveryApp.Persistence.Services
 		public IQueryable<Company> GetAllCompany()
         {
 			var query = _companyRepository.GetAll(false);
-			query = query.Include(x => x.Products)
+			query = query.
+					 Include(x => x.Products)
+					.Include(x => x.Orders)
+					.Include(x => x.Comments)
+					.ThenInclude(x=>x.Customer)
 					.Include(x=>x.Categories).ThenInclude(x=>x.Products)
 					.OrderByDescending(x=>x.CreatedDate);
 
 			return query;
         }
 
-		public async Task<Company> GetCompanyByIdAsync(int id)
+		public async Task<Company> GetCompanyByIdAsync(int? id)
         {
 			var company = await _context.Companies
-				.Include(x=>x.Categories)
-				.ThenInclude(x=>x.Products)
+				.Include(x => x.Orders)
+				.Include(x => x.Comments)
+				.ThenInclude(x => x.Customer)
+				.Include(x => x.Categories)
+				.ThenInclude(x => x.Products)
 				.FirstOrDefaultAsync(x=>x.Id==id);
 			
 

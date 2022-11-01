@@ -41,11 +41,18 @@ namespace DeliveryApp.Company.Controllers
 		[HttpPost]
         public async Task<IActionResult> Register(RegisterCompanyVM registerVM)
         {
+            if (!ModelState.IsValid) return View(registerVM);
+            try
+            {
+                CreateUserResponse response = await _companyService.CreateAsync(registerVM);
+                 return RedirectToAction("login");
+            }
+            catch (Exception)
+            {
 
-            CreateUserResponse response = await _companyService.CreateAsync(registerVM);
-            if (response.Succeeded) return RedirectToAction("login");
+                return View(registerVM);
+            }
 
-            return BadRequest(response.Message);
         }
 
         [HttpPost]
@@ -162,6 +169,11 @@ namespace DeliveryApp.Company.Controllers
                 }
             };
 
+        }
+
+        public async Task<IActionResult> Balance()
+        {
+            return View();
         }
     }
 }

@@ -12,14 +12,17 @@ namespace DeliveryApp.Domain.Entities
         public string? Name { get; set; }
         public string? SurName { get; set; }
         public string? Address { get; set; }
-        public string? ImageUrl { get; set; }
-        public string? ImagePublicId { get; set; }
+
+        public string? ImageUrl { get; set; } = "https://res.cloudinary.com/webapi/image/upload/v1666979522/profileunnamed_lskq8l.png";
+        public string? ImagePublicId { get; set; } = "profileunnamed_lskq8l";
 
 
         public string? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
 
         public ICollection<Order>? Orders { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
+
 
     }
 }

@@ -24,7 +24,7 @@ namespace DeliveryApp.Customer.ViewComponents
             {
                 AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var customer = _context.Customers.FirstOrDefault(x => x.AppUserId == user.Id);
-                vm.CustomerName = customer.Name;
+                vm.CustomerProfile = customer;
             }
                 return View(vm);
         }

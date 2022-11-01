@@ -14,7 +14,8 @@
 <img alt="#" src="@Model.ImageUrl" class="restaurant-pic"/>
 <div class="pt-3 text-white">
 <h2 class="font-weight-bold">@Model.Name</h2>
-<p class="text-white m-0">@Model.Adress</p>
+<p class="text-white m-0">@Model.Address</p>
+<p class="text-white m-0">@Model.PhoneNumber</p>
 <div class="rating-wrap d-flex align-items-center mt-2">
 <ul class="rating-stars list-unstyled">
 <li>
@@ -31,8 +32,8 @@
 <div class="pb-4">
 <div class="row">
 <div class="col-6 col-md-2">
-<p class="text-white-50 font-weight-bold m-0 small">Delivery</p>
-<p class="text-white m-0">Free</p>
+<p class="text-white-50 font-weight-bold m-0 small">Service Fee</p>
+<p class="text-white m-0">@Model.ServiceFee AZN</p>
 </div>
 <div class="col-6 col-md-2">
 <p class="text-white-50 font-weight-bold m-0 small">Open time</p>
@@ -91,7 +92,7 @@
 }
 </div>
 <div class="mb-3">
-<div id="ratings-and-reviews" class="bg-white shadow-sm d-flex align-items-center rounded p-3 mb-3 clearfix restaurant-detailed-star-rating">
+@*<div id="ratings-and-reviews" class="bg-white shadow-sm d-flex align-items-center rounded p-3 mb-3 clearfix restaurant-detailed-star-rating">
 <h6 class="mb-0">Rate this Place</h6>
 <div class="star-rating ml-auto">
 <div class="d-inline-block h6 m-0"><i class="feather-star text-warning"></i>
@@ -102,8 +103,8 @@
 </div>
 <b class="text-black ml-2">334</b>
 </div>
-</div>
-<div class="bg-white rounded p-3 mb-3 clearfix graph-star-rating rounded shadow-sm">
+</div>*@
+@*<div class="bg-white rounded p-3 mb-3 clearfix graph-star-rating rounded shadow-sm">
 <h6 class="mb-0 mb-1">Ratings and Reviews</h6>
 <p class="text-muted mb-4 mt-1 small">Rated 3.5 out of 5</p>
 <div class="graph-star-rating-body">
@@ -154,70 +155,15 @@
 </div>
 </div>
 <div class="graph-star-rating-footer text-center mt-3"><button type="button" class="btn btn-primary btn-block btn-sm">Rate and Review</button></div>
-</div>
+</div>*@
 <div class="bg-white p-3 mb-3 restaurant-detailed-ratings-and-reviews shadow-sm rounded">
 <a class="text-primary float-right" href="#">Top Rated</a>
-<h6 class="mb-1">All Ratings and Reviews</h6>
-<div class="reviews-members py-3">
-<div class="media">
-<a href="#"><img alt="#" src="" class="mr-3 rounded-pill"></a>
-<div class="media-body">
-<div class="reviews-members-header">
-<div class="star-rating float-right">
-<div class="d-inline-block" style="font-size: 14px;"><i class="feather-star text-warning"></i>
-<i class="feather-star text-warning"></i>
-<i class="feather-star text-warning"></i>
-<i class="feather-star text-warning"></i>
-<i class="feather-star"></i>
-</div>
-</div>
-<h6 class="mb-0"><a class="text-dark" href="#">Trump</a></h6>
-<p class="text-muted small">Tue, 20 Mar 2020</p>
-</div>
-<div class="reviews-members-body">
-<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classNameical Latin literature from 45 BC, making it over 2000 years old.</p>
-</div>
-<div class="reviews-members-footer"><a class="total-like btn btn-sm btn-outline-primary" href="#"><i class="feather-thumbs-up"></i> 856M</a> <a class="total-like btn btn-sm btn-outline-primary" href="#"><i class="feather-thumbs-down"></i> 158K</a>
-<span class="total-like-user-main ml-2" dir="rtl">
-<a href="#" aria-describedby="tooltip-top0"><img alt="#" src="~/img/reviewer3.png" class="total-like-user rounded-pill"></a>
-<a href="#" aria-describedby="tooltip-top1"><img alt="#" src="~/img/reviewer4.png" class="total-like-user rounded-pill"></a>
-<a href="#"><img alt="#" src="~/img/reviewer5.png" class="total-like-user rounded-pill"></a>
-<a href="#" aria-describedby="tooltip-top3"><img alt="#" src="~/img/reviewer6.png" class="total-like-user rounded-pill"></a>
-</span>
-</div>
-</div>
-</div>
-</div>
-<hr>
-<div class="reviews-members py-3">
-<div class="media">
-<a href="#"><img alt="#" src="~/img/reviewer2.png" class="mr-3 rounded-pill"></a>
-<div class="media-body">
-<div class="reviews-members-header">
-<div class="star-rating float-right">
-<div class="d-inline-block" style="font-size: 14px;"><i class="feather-star text-warning"></i>
-<i class="feather-star text-warning"></i>
-<i class="feather-star text-warning"></i>
-<i class="feather-star text-warning"></i>
-<i class="feather-star"></i>
-</div>
-</div>
-<h6 class="mb-0"><a class="text-dark" href="#">Jhon Smith</a></h6>
-<p class="text-muted small">Tue, 20 Mar 2020</p>
-</div>
-<div class="reviews-members-body">
-<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-</div>
-<div class="reviews-members-footer"><a class="total-like btn btn-sm btn-outline-primary" href="#"><i class="feather-thumbs-up"></i> 88K</a> <a class="total-like btn btn-sm btn-outline-primary" href="#"><i class="feather-thumbs-down"></i> 1K</a><span class="total-like-user-main ml-2" dir="rtl"><a href="#"><img alt="#" src="~/img/reviewer3.png" class="total-like-user rounded-pill"></a><a href="#"><img alt="#" src="~/img/reviewer4.png" class="total-like-user rounded-pill"></a><a href="#"><img alt="#" src="~/img/reviewer5.png" class="total-like-user rounded-pill"></a><a href="#"><img alt="#" src="~/img/reviewer6.png" class="total-like-user rounded-pill"></a></span></div>
-</div>
-</div>
-</div>
-<hr>
-<a class="text-center w-100 d-block mt-3 font-weight-bold" href="#">See All Reviews</a>
-</div>
-<div class="bg-white p-3 rating-review-select-page rounded shadow-sm">
+<h6 class="mb-1">All Reviews</h6>
+
+<div class="bg-white p-3 mt-3 mb-4 rating-review-select-page rounded shadow-sm">
 <h6 class="mb-3">Leave Comment</h6>
-<div class="d-flex align-items-center mb-3">
+
+@*<div class="d-flex align-items-center mb-3">
 <p class="m-0 small">Rate the Place</p>
 <div class="star-rating ml-auto">
 <div class="d-inline-block"><i class="feather-star text-warning"></i>
@@ -227,12 +173,69 @@
 <i class="feather-star"></i>
 </div>
 </div>
-</div>
+</div>*@
+
 <form>
-<div class="form-group"><label class="form-label small">Your Comment</label><textarea class="form-control"></textarea></div>
-<div class="form-group mb-0"><button type="button" class="btn btn-primary btn-block"> Submit Comment </button></div>
+    <div class="form-group"><label class="form-label small">Your Comment</label>
+        <textarea data-id="@Model.Id" id="contentComment" class="form-control" @(!User.Identity.IsAuthenticated?"disabled":"")></textarea>
+    </div>
+    <div class="form-group mb-0">
+        <button id="addbtncomment" type="button" class="btn btn-primary btn-block" @(!User.Identity.IsAuthenticated?"disabled":"")> Submit Comment </button>
+    </div>
 </form>
+
+
 </div>
+
+<hr>
+
+<div id="commentarea" style="max-height:400px;overflow:hidden; overflow-y:scroll;">
+
+
+@foreach (var c in Model.Comments.OrderByDescending(x=>x.CreatedDate))
+{
+    <div class="reviews-members py-2">
+    <div class="media">
+        <a href="#"><img style="height:50px;" alt="#" src="@c.Customer.ImageUrl" class="mr-3 rounded-pill"></a>
+        <div class="media-body">
+            <div class="reviews-members-header">
+                <div class="star-rating float-right">
+                    @*<div class="d-inline-block" style="font-size: 14px;"><i class="feather-star text-warning"></i>
+                        <i class="feather-star text-warning"></i>
+                        <i class="feather-star text-warning"></i>
+                        <i class="feather-star text-warning"></i>
+                        <i class="feather-star"></i>
+                    </div>*@
+                </div>
+                <h6 class="mb-0"><a class="text-dark" href="#">@c.Customer.Name @c.Customer.SurName</a></h6>
+                <p class="text-muted small">@c.CreatedDate.ToShortDateString()</p>
+            </div>
+            <div class="reviews-members-body">
+                <p>@c.Content</p>
+            </div>
+            @*<div class="reviews-members-footer"><a class="total-like btn btn-sm btn-outline-primary" href="#"><i
+                        class="feather-thumbs-up"></i> 856M</a> <a class="total-like btn btn-sm btn-outline-primary"
+                    href="#"><i class="feather-thumbs-down"></i> 158K</a>
+                <span class="total-like-user-main ml-2" dir="rtl">
+                    <a href="#" aria-describedby="tooltip-top0"><img alt="#" src="~/img/reviewer3.png"
+                            class="total-like-user rounded-pill"></a>
+                    <a href="#" aria-describedby="tooltip-top1"><img alt="#" src="~/img/reviewer4.png"
+                            class="total-like-user rounded-pill"></a>
+                    <a href="#"><img alt="#" src="~/img/reviewer5.png" class="total-like-user rounded-pill"></a>
+                    <a href="#" aria-describedby="tooltip-top3"><img alt="#" src="~/img/reviewer6.png"
+                            class="total-like-user rounded-pill"></a>
+                </span>
+            </div>*@
+        </div>
+    </div>
+</div>
+<hr>
+}
+</div>
+
+@*<a class="text-center w-100 d-block mt-3 font-weight-bold" href="#">See All Reviews</a>*@
+</div>
+
 </div>
 </div>
         @*card item*@
@@ -244,5 +247,9 @@
 
 @section Scripts{
 <script type="11efad072887e2e154cdf8b5-text/javascript" src="~/js/basket.js"></script>
+<script type="11efad072887e2e154cdf8b5-text/javascript" src="~/js/comment.js"></script>
     
+
 }
+
+ 
